@@ -8,8 +8,8 @@ function photographerTemplate(data) {
         const img = document.createElement("img");
         img.setAttribute("src", picture);
 
-        const h2 = document.createElement("h2");
-        h2.textContent = name;
+        const nameElement = document.createElement("h2");
+        nameElement.textContent = name;
 
         const location = document.createElement("h3");
         location.textContent = `${city}, ${country}`;
@@ -21,7 +21,7 @@ function photographerTemplate(data) {
         priceElement.textContent = `${price}€/jour`;
 
         article.appendChild(img);
-        article.appendChild(h2);
+        article.appendChild(nameElement);
         article.appendChild(location);
         article.appendChild(taglineElement);
         article.appendChild(priceElement);
