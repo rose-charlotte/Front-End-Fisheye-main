@@ -7,7 +7,7 @@ async function getPhotographers() {
         const data = await response.json();
         const photographers = data.photographers;
         return {
-            photographers: [...photographers, ...photographers, ...photographers],
+            photographers: [...photographers],
         };
     }
 }
