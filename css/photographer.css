@@ -6,6 +6,33 @@
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+/* Modification according to js creation of photographer page */
+
+.photograph-header h1{
+    font-size: 64px;
+    color: #d3573c;
+    margin-bottom: unset;
+}
+.photograph-header h3{
+    color: #901C1C;
+    font-size: 24px;
+}
+
+.photograph-header p{
+    font-size: 18px;
+}
+
+.photograph-header img{
+    width: 200px;
+    object-fit: cover;
+    height: 200px;
+    border-radius: 50%;
 }
 
 .contact_button {
@@ -19,6 +46,7 @@
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
+    align-self: center;
 }
 
 .modal {
