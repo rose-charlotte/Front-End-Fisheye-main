@@ -28,3 +28,19 @@ export async function getPhotographerById(id) {
         throw new Error(`Une erreur est survenue lors de la récupération du photographe avec l'id ${id}`);
     }
 }
+
+export async function getPhotographerMedia(id) {
+    const response = await fetch(photographerEndpoint);
+
+    if (response.ok) {
+        const data = await response.json();
+        const allMedia = data.media;
+        const photographerMedia = allMedia.filter(media => media.photographerId === id);
+
+        return photographerMedia;
+    } else {
+        throw new Error(
+            `Une erreur est survenue lors de la récupération de la liste des médias correspondant au photographe dont l'id est ${id}`
+        );
+    }
+}

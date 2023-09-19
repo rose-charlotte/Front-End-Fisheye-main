@@ -12,7 +12,7 @@
     flex-wrap: wrap;
 }
 
-/* Modification according to js creation of photographer page */
+/* Modification according to js creation of photographer page photographer - header section */
 
 .photograph-header h1{
     font-size: 64px;
@@ -33,7 +33,17 @@
     object-fit: cover;
     height: 200px;
     border-radius: 50%;
+    align-self: center;
 }
+
+
+/*Modification according to js creation of photographer page photographer- media section*/
+
+.photograph-media{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 
 .contact_button {
     font-size: 20px;
