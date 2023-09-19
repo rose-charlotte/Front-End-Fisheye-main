@@ -59,6 +59,11 @@
     align-self: center;
 }
 
+.contact_button:hover,
+.contact_button:focus{
+    background-color: #D3573C;
+}
+
 .modal {
     border-radius: 5px;
     background-color: #DB8876;

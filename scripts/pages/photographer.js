@@ -64,7 +64,7 @@ function photographerPageTemplate(data) {
 }
 
 function showPhotographerMedia(mediaData) {
-    const { date, image, likes, price, title } = mediaData;
+    const { likes, title } = mediaData;
 
     function getMediaCardDom() {
         const article = document.createElement("article");
