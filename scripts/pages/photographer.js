@@ -1,40 +1,37 @@
 //Mettre le code JavaScript lié à la page photographer.html
 import { getPhotographerById } from "../data/photographer.js";
-import { getPhotographerMedia } from "../data/photographer.js";
+import { getPhotographerMediaById } from "../data/photographer.js";
+import { MediaFactory } from "../utils/mediaBuilder.js";
 
-async function getOnePhotographer() {
+function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
-
-    const photographer = await getPhotographerById(id);
-    photographerPageTemplate(photographer);
+    try {
+        return Promise.all([getPhotographerById(id), getPhotographerMediaById(id)]);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
-getOnePhotographer();
-
-async function getOnePhotographerMedia() {
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"));
-
-    const medias = await getPhotographerMedia(id);
+function buildPhotographerMediaList(photographer, medias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
+    const firstName = photographer.name.split(" ")[0];
+    const assetsFolder = `assets/photographers/${firstName}/`;
 
     medias.forEach(media => {
-        const photographerMedia = showPhotographerMedia(media);
-        const mediaCardDOM = photographerMedia.getMediaCardDom();
-        photographMediaDomElement.appendChild(mediaCardDOM);
+        const photographerMedia = buildPhotographerMedia(media, assetsFolder);
+        photographMediaDomElement.appendChild(photographerMedia);
     });
 }
-getOnePhotographerMedia();
 
-function photographerPageTemplate(data) {
+function buildPhotographerInfo(photographer) {
     const header = document.querySelector("header");
     const logo = document.querySelector(".logo");
     const logoLink = document.createElement("a");
     logoLink.setAttribute("style", "cursor: pointer; text-decoration:none");
     logoLink.addEventListener("click", () => logoLink.setAttribute("href", "index.html"));
 
-    const { name, city, country, tagline, portrait } = data;
+    const { name, city, country, tagline, portrait } = photographer;
     const photographerHeader = document.querySelector(".photograph-header");
 
     const photographerInfo = document.createElement("div");
@@ -61,30 +58,73 @@ function photographerPageTemplate(data) {
     photographerInfo.appendChild(location);
     photographerInfo.appendChild(taglineElement);
     photographerHeader.appendChild(img);
+
+    return { name };
 }
 
-function showPhotographerMedia(mediaData) {
+function buildPhotographerMedia(mediaData, assetsFolder) {
     const { likes, title } = mediaData;
+    const article = document.createElement("article");
 
-    function getMediaCardDom() {
-        const article = document.createElement("article");
+    const mediaFactory = new MediaFactory(mediaData, assetsFolder);
 
-        const mediaTitle = document.createElement("p");
-        mediaTitle.textContent = title;
+    const mediaTitle = document.createElement("p");
+    mediaTitle.textContent = title;
 
-        const heartIcon = document.createElement("img");
-        heartIcon.setAttribute("src", "assets/icons/likes.svg");
+    const heartIcon = document.createElement("img");
+    heartIcon.setAttribute("src", "assets/icons/likes.svg");
 
-        const mediaLikes = document.createElement("div");
+    const mediaLikes = document.createElement("div");
 
-        mediaLikes.textContent = likes;
-        mediaLikes.setAttribute("aria-label", "likes");
+    mediaLikes.textContent = likes;
+    mediaLikes.setAttribute("aria-label", "likes");
 
-        article.appendChild(mediaTitle);
-        article.appendChild(mediaLikes);
-        mediaLikes.appendChild(heartIcon);
+    article.appendChild(mediaFactory.build());
+    article.appendChild(mediaTitle);
+    article.appendChild(mediaLikes);
+    mediaLikes.appendChild(heartIcon);
 
-        return article;
-    }
-    return { title, getMediaCardDom };
+    return article;
 }
+
+function buildPhotographerCardInfo(photographer, medias) {
+    const price = photographer.price;
+    const mainSection = document.querySelector("#main");
+
+    const cardInfo = document.createElement("div");
+    cardInfo.setAttribute("class", "card-info");
+    cardInfo.setAttribute("aria-label", "information photographe");
+
+    const cardInfoPrice = document.createElement("p");
+    cardInfoPrice.setAttribute("aria-label", "prix par jour");
+    cardInfoPrice.textContent = `${price}€/jour`;
+
+    const cardInfoLike = document.createElement("div");
+    cardInfoLike.setAttribute("aria-label", "nombre de likes");
+    const likeImg = document.createElement("img");
+    likeImg.setAttribute("aria-hidden", "true");
+    likeImg.setAttribute("src", "assets/icons/likes.svg");
+
+    // Add like number: creation of an empty array to stock likes values for each media
+    // Use the reduce methode to get the sum of all likes.
+    const likesArray = [];
+    medias.forEach(like => likesArray.push(like.likes));
+    const totalLike = likesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    cardInfoLike.textContent = totalLike;
+
+    mainSection.appendChild(cardInfo);
+    cardInfo.appendChild(cardInfoPrice);
+    cardInfo.appendChild(cardInfoLike);
+    cardInfoLike.appendChild(likeImg);
+}
+
+async function buildPage() {
+    const [photographer, medias] = await getPhotographerInfo();
+
+    buildPhotographerInfo(photographer);
+    buildPhotographerMediaList(photographer, medias);
+    buildPhotographerCardInfo(photographer, medias);
+}
+
+buildPage();

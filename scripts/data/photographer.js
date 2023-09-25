@@ -29,7 +29,7 @@ export async function getPhotographerById(id) {
     }
 }
 
-export async function getPhotographerMedia(id) {
+export async function getPhotographerMediaById(id) {
     const response = await fetch(photographerEndpoint);
 
     if (response.ok) {

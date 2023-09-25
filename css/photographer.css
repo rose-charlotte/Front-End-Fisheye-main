@@ -44,6 +44,22 @@
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+.picture{
+    width: 350px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.video{
+    width: 350px;
+    height: 300px;
+}
+
+
+.card-info{
+    border: solid 2px black;
+    background-color:#DB8876 ;
+}
 
 .contact_button {
     font-size: 20px;
