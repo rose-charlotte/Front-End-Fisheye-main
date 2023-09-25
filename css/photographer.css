@@ -57,8 +57,25 @@
 
 
 .card-info{
-    border: solid 2px black;
     background-color:#DB8876 ;
+    width: 376px;
+    height: 89px;
+    position: sticky;
+    bottom: 0px;
+    left: 1150px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 5px;
+}
+
+.info-like,
+.info-price{
+    display: flex;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: 500;
 }
 
 .contact_button {

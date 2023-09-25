@@ -96,14 +96,16 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.setAttribute("aria-label", "information photographe");
 
     const cardInfoPrice = document.createElement("p");
+    cardInfoPrice.setAttribute("class", "info-price");
     cardInfoPrice.setAttribute("aria-label", "prix par jour");
-    cardInfoPrice.textContent = `${price}€/jour`;
+    cardInfoPrice.textContent = `${price}€ / jour`;
 
     const cardInfoLike = document.createElement("div");
+    cardInfoLike.setAttribute("class", "info-like");
     cardInfoLike.setAttribute("aria-label", "nombre de likes");
     const likeImg = document.createElement("img");
     likeImg.setAttribute("aria-hidden", "true");
-    likeImg.setAttribute("src", "assets/icons/likes.svg");
+    likeImg.setAttribute("src", "assets/icons/likesBlack.svg");
 
     // Add like number: creation of an empty array to stock likes values for each media
     // Use the reduce methode to get the sum of all likes.
@@ -114,9 +116,9 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfoLike.textContent = totalLike;
 
     mainSection.appendChild(cardInfo);
-    cardInfo.appendChild(cardInfoPrice);
     cardInfo.appendChild(cardInfoLike);
     cardInfoLike.appendChild(likeImg);
+    cardInfo.appendChild(cardInfoPrice);
 }
 
 async function buildPage() {
