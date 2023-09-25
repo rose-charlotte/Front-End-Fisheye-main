@@ -68,6 +68,9 @@ function buildPhotographerMedia(mediaData, assetsFolder) {
 
     const mediaFactory = new MediaFactory(mediaData, assetsFolder);
 
+    const mediaInfo = document.createElement("div");
+    mediaInfo.setAttribute("class", "media-info");
+    mediaInfo.setAttribute("aria-label", "media info");
     const mediaTitle = document.createElement("p");
     mediaTitle.textContent = title;
 
@@ -80,8 +83,9 @@ function buildPhotographerMedia(mediaData, assetsFolder) {
     mediaLikes.setAttribute("aria-label", "likes");
 
     article.appendChild(mediaFactory.build());
-    article.appendChild(mediaTitle);
-    article.appendChild(mediaLikes);
+    article.appendChild(mediaInfo);
+    mediaInfo.appendChild(mediaTitle);
+    mediaInfo.appendChild(mediaLikes);
     mediaLikes.appendChild(heartIcon);
 
     return article;

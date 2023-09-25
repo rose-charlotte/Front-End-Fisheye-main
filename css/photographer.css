@@ -2,6 +2,11 @@
     display: none;
 }
 
+#main{
+    display: flex;
+    flex-direction: column;
+}
+
 .photograph-header {
     background-color: #FAFAFA;
     height: 300px;
@@ -42,12 +47,24 @@
 .photograph-media{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+.media-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #901C1C;
+    font-size: 24px;
+    align-items: center;
+        
 }
 
 .picture{
     width: 350px;
     height: 300px;
     object-fit: cover;
+    border-radius: 5px;
 }
 
 .video{
@@ -59,7 +76,6 @@
 .card-info{
     background-color:#DB8876 ;
     width: 376px;
-    height: 89px;
     position: sticky;
     bottom: 0px;
     left: 1150px;
@@ -68,6 +84,7 @@
     align-items: center;
     flex-direction: row;
     border-radius: 5px;
+    align-self: flex-end;
 }
 
 .info-like,
