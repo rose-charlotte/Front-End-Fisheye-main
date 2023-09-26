@@ -2,6 +2,11 @@
 import { getPhotographerById } from "../data/photographer.js";
 import { getPhotographerMediaById } from "../data/photographer.js";
 import { MediaFactory } from "../utils/mediaBuilder.js";
+import {
+    buildPhotographerLocation,
+    buildPhotographerName,
+    buildPhotographerTagline,
+} from "../utils/buildPhotographerName.js";
 
 function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
@@ -37,14 +42,11 @@ function buildPhotographerInfo(photographer) {
     const photographerInfo = document.createElement("div");
     photographerInfo.setAttribute("aria-label", "information sur le photographe");
 
-    const photographerName = document.createElement("h1");
-    photographerName.textContent = name;
+    const photographerName = buildPhotographerName(name);
 
-    const location = document.createElement("h3");
-    location.textContent = `${city}, ${country}`;
+    const location = buildPhotographerLocation(city, country);
 
-    const taglineElement = document.createElement("p");
-    taglineElement.textContent = tagline;
+    const taglineElement = buildPhotographerTagline(tagline);
 
     const picture = `assets/photographers/${portrait}`;
     const img = document.createElement("img");

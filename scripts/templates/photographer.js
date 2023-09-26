@@ -1,3 +1,9 @@
+import {
+    buildPhotographerLocation,
+    buildPhotographerName,
+    buildPhotographerTagline,
+} from "../utils/buildPhotographerName.js";
+
 function photographerTemplate(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
 
@@ -7,7 +13,6 @@ function photographerTemplate(data) {
         const article = document.createElement("article");
 
         const link = document.createElement("a");
-
         link.setAttribute("style", "cursor: pointer; text-decoration:none");
         link.setAttribute("aria-label", `lien vers la page de ${name}`);
         link.addEventListener("click", () => link.setAttribute("href", `photographer.html?id=${id}`));
@@ -16,14 +21,11 @@ function photographerTemplate(data) {
         img.setAttribute("src", picture);
         img.setAttribute("alt", name);
 
-        const nameElement = document.createElement("h2");
-        nameElement.textContent = name;
+        const nameElement = buildPhotographerName(name);
 
-        const location = document.createElement("h3");
-        location.textContent = `${city}, ${country}`;
+        const location = buildPhotographerLocation(city, country);
 
-        const taglineElement = document.createElement("p");
-        taglineElement.textContent = tagline;
+        const taglineElement = buildPhotographerTagline(tagline);
 
         const priceElement = document.createElement("p");
         priceElement.textContent = `${price}€/jour`;
