@@ -13,7 +13,8 @@
         </header>
         <main id="main">
             <div class="photograph-header">
-                <button class="contact_button" aria-label="Contact me" onclick="displayModal()">Contactez-moi</button>
+                <button class="contact_button" aria-label="Contact me">Contactez-moi</button>
+                <!-- onclick="displayModal()" -->
             </div>
             <div class="photograph-media"></div>
         </main>
@@ -21,18 +22,23 @@
             <div class="modal">
                 <header>
                     <h2>Contactez-moi</h2>
-                    <img src="assets/icons/close.svg" onclick="closeModal()" />
+                    <img src="assets/icons/close.svg" class="close_btn" />
                 </header>
                 <form>
-                    <div>
-                        <label>Prénom</label>
-                        <input />
-                    </div>
+                    <label for="firstname">Prénom</label>
+                    <input type="text" name="firstname" id="firstname" />
+                    <label for="lastname">Nom</label>
+                    <input type="text" name="lastname" id="lastname" />
+                    <label for="Email">Email</label>
+                    <input type="email" name="Email" id="Email" />
+                    <label for="message">Votre message</label>
+                    <textarea name="message" id="message"></textarea>
+
                     <button class="contact_button">Envoyer</button>
                 </form>
             </div>
         </div>
         <script src="/scripts/pages/photographer.js" type="module"></script>
-        <script src="/scripts/utils/contactForm.js"></script>
+        <script src="/scripts/utils/contactForm.js" type="module"></script>
     </body>
 </html>

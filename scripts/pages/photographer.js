@@ -7,6 +7,7 @@ import {
     buildPhotographerName,
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
+import { displayModal, closeModal } from "../utils/contactForm.js";
 
 function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
@@ -60,6 +61,12 @@ function buildPhotographerInfo(photographer) {
     photographerInfo.appendChild(location);
     photographerInfo.appendChild(taglineElement);
     photographerHeader.appendChild(img);
+
+    // Contact modal display
+    const contactMeButton = document.querySelector(".contact_button");
+    contactMeButton.addEventListener("click", displayModal);
+    const CloseModalButton = document.querySelector(".close_btn");
+    CloseModalButton.addEventListener("click", closeModal);
 
     return { name };
 }
