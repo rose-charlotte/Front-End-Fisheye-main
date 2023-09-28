@@ -1,3 +1,5 @@
+import { displayLightbox } from "./lightbox.js";
+
 export class MediaFactory {
     #media;
     #assetsFolder;
@@ -34,6 +36,8 @@ class ImageBuilder {
         img.setAttribute("class", "picture");
         img.setAttribute("src", `${this.#assetsFolder}${this.#media.image}`);
         img.setAttribute("alt", "photo");
+        img.setAttribute("style", "cursor: pointer");
+        img.addEventListener("click", displayLightbox);
         return img;
     }
 }
@@ -51,6 +55,8 @@ class VideoBuilder {
         const video = document.createElement("video");
         video.setAttribute("class", "video");
         video.setAttribute("src", `${this.#assetsFolder}${this.#media.video}`);
+        video.setAttribute("style", "cursor: pointer");
+        video.addEventListener("click", () => console.log("good"));
         return video;
     }
 }

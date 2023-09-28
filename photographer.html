@@ -8,23 +8,27 @@
         <title>Fisheye - photographe</title>
     </head>
     <body>
-        <header>
-            <img src="assets/images/logo.png" class="logo" alt="Fisheye Home Page" />
-        </header>
-        <main id="main">
-            <div class="photograph-header">
-                <button class="contact_button" aria-label="Contact me">Contactez-moi</button>
-                <!-- onclick="displayModal()" -->
-            </div>
-            <div class="photograph-media"></div>
-        </main>
+        <div aria-hidden="true" class="main_page">
+            <header>
+                <img src="assets/images/logo.png" class="logo" alt="Fisheye Home Page" />
+            </header>
+            <main id="main">
+                <div class="photograph-header">
+                    <button class="contact_button" aria-label="Contact me">Contactez-moi</button>
+                    <!-- onclick="displayModal()" -->
+                </div>
+                <div class="photograph-media"></div>
+            </main>
+        </div>
         <div id="contact_modal">
             <div class="modal">
-                <header>
-                    <h2>Contactez-moi</h2>
+                <header class="modal_header">
+                    <div class="contact_info">
+                        <h2>Contactez-moi</h2>
+                    </div>
                     <img src="assets/icons/close.svg" class="close_btn" />
                 </header>
-                <form>
+                <form class="contact-form">
                     <label for="firstname">Prénom</label>
                     <input type="text" name="firstname" id="firstname" />
                     <label for="lastname">Nom</label>
@@ -32,11 +36,14 @@
                     <label for="Email">Email</label>
                     <input type="email" name="Email" id="Email" />
                     <label for="message">Votre message</label>
-                    <textarea name="message" id="message"></textarea>
+                    <textarea class="text-area" name="message" id="message"></textarea>
 
                     <button class="contact_button">Envoyer</button>
                 </form>
             </div>
+        </div>
+        <div class="lightbox" aria-label="lightbox">
+            <img src="assets/icons/close.svg" class="close-btn" />
         </div>
         <script src="/scripts/pages/photographer.js" type="module"></script>
         <script src="/scripts/utils/contactForm.js" type="module"></script>

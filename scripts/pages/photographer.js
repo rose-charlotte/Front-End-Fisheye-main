@@ -8,6 +8,7 @@ import {
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
+import { closeLightbox } from "../utils/lightbox.js";
 
 function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
@@ -65,8 +66,29 @@ function buildPhotographerInfo(photographer) {
     // Contact modal display
     const contactMeButton = document.querySelector(".contact_button");
     contactMeButton.addEventListener("click", displayModal);
-    const CloseModalButton = document.querySelector(".close_btn");
-    CloseModalButton.addEventListener("click", closeModal);
+    const closeModalButton = document.querySelector(".close_btn");
+    closeModalButton.addEventListener("click", closeModal);
+
+    const modalContactInfo = document.querySelector(".contact_info");
+    const modalNameElement = document.createElement("h2");
+    modalNameElement.textContent = name;
+    modalContactInfo.appendChild(modalNameElement);
+
+    const contactForm = document.querySelector(".contact-form");
+    const firstName = document.querySelector("#firstname");
+    const lastName = document.querySelector("#lastname");
+    const email = document.querySelector("#Email");
+    const message = document.querySelector("#message");
+
+    contactForm.addEventListener("submit", onSubmit);
+
+    function onSubmit(e) {
+        e.preventDefault();
+        console.log(
+            `mon formulaire  indique: prénom:${firstName.value}, nom de famille:${lastName.value}, email:${email.value} , et message: ${message.value}`
+        );
+        closeModal();
+    }
 
     return { name };
 }
@@ -134,12 +156,19 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
+function buildLightBox() {
+    const closeBtn = document.querySelector(".close-btn");
+    closeBtn.setAttribute("style", "cursor:pointer");
+    closeBtn.addEventListener("click", closeLightbox);
+}
+
 async function buildPage() {
     const [photographer, medias] = await getPhotographerInfo();
 
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
+    buildLightBox();
 }
 
 buildPage();
