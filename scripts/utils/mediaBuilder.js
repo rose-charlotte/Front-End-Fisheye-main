@@ -1,5 +1,3 @@
-import { displayLightbox } from "./lightbox.js";
-
 export class MediaFactory {
     #media;
     #assetsFolder;
@@ -37,7 +35,6 @@ class ImageBuilder {
         img.setAttribute("src", `${this.#assetsFolder}${this.#media.image}`);
         img.setAttribute("alt", "photo");
         img.setAttribute("style", "cursor: pointer");
-        img.addEventListener("click", displayLightbox);
         return img;
     }
 }

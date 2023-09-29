@@ -218,3 +218,7 @@ form input {
     border: solid black 2px;
     background-color: red;
 } 
+
+.lightbox-img{
+    width: 50%;
+}

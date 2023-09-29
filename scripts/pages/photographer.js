@@ -8,7 +8,7 @@ import {
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
-import { closeLightbox } from "../utils/lightbox.js";
+import { closeLightbox, displayLightbox } from "../utils/lightbox.js";
 
 function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
@@ -95,6 +95,7 @@ function buildPhotographerInfo(photographer) {
 
 function buildPhotographerMedia(mediaData, assetsFolder) {
     const { likes, title } = mediaData;
+
     const article = document.createElement("article");
 
     const mediaFactory = new MediaFactory(mediaData, assetsFolder);
@@ -113,7 +114,8 @@ function buildPhotographerMedia(mediaData, assetsFolder) {
     mediaLikes.textContent = likes;
     mediaLikes.setAttribute("aria-label", "likes");
 
-    article.appendChild(mediaFactory.build());
+    const mediaElement = mediaFactory.build();
+    article.appendChild(mediaElement);
     article.appendChild(mediaInfo);
     mediaInfo.appendChild(mediaTitle);
     mediaInfo.appendChild(mediaLikes);
@@ -156,7 +158,10 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLightBox() {
+function buildLighBoxMedia() {
+    const selectedImages = document.querySelectorAll(".picture");
+    selectedImages.forEach(image => image.addEventListener("click", displayLightbox));
+
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
@@ -168,7 +173,7 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
-    buildLightBox();
+    buildLighBoxMedia();
 }
 
 buildPage();
