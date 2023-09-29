@@ -214,11 +214,36 @@ form input {
 /* CSS for the lightbox */
 .lightbox{
     display: none;
-    width: 200px;
-    border: solid black 2px;
-    background-color: red;
+    width: 70%;
+    align-self: center;
+    flex-direction: column;
+    margin-top: 5%;
 } 
 
+.lightbox-container{
+    display: flex;
+}
+
+.media{
+    display: flex;
+    justify-content: center;
+        
+}
 .lightbox-img{
-    width: 50%;
+    width: 60%;
+    max-height: 90%;
+}
+
+.backward-btn,
+.forward-btn{
+    padding: 20px;
+    width: 5%;
+    align-self: center;
+    cursor: pointer;
+}
+
+.close-btn{
+    width: 3%;
+    align-self: flex-end;
+    padding: 20px;
 }

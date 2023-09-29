@@ -44,9 +44,11 @@
         </div>
         <div class="lightbox" aria-label="lightbox">
             <img src="assets/icons/closeRed.svg" class="close-btn" alt="close button" />
-            <img src="assets/icons/backward.svg" class="backward-btn" alt="photo précédente" />
-            <img src="assets/icons/forward.svg" class="forward-btn" alt="photo suivante" />
-            <div id="media"></div>
+            <div class="lightbox-container">
+                <a class="backward-btn"><img src="assets/icons/backward.svg" alt="photo précédente" /></a>
+                <div class="media"></div>
+                <a class="forward-btn"><img src="assets/icons/forward.svg" alt="photo suivante" /></a>
+            </div>
         </div>
         <script src="/scripts/pages/photographer.js" type="module"></script>
         <script src="/scripts/utils/contactForm.js" type="module"></script>
