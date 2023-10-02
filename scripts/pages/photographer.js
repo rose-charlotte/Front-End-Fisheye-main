@@ -176,6 +176,13 @@ function buildLighBoxMedia(photographer, medias) {
     const prevdBtn = document.querySelector(".backward-btn");
     prevdBtn.addEventListener("click", prevPhoto);
 
+    const lightBox = document.querySelector(".lightbox");
+    lightBox.onKeydown = prevAndNextPhoto;
+
+    function prevAndNextPhoto(event) {
+        console.log(event);
+    }
+
     const assetsFolder = getPhotographerAssetsFolder(photographer);
 
     function nextPhoto() {
@@ -190,9 +197,10 @@ function buildLighBoxMedia(photographer, medias) {
 
     function prevPhoto() {
         const selectedImage = document.querySelector(".lightbox-img");
-        const currentIndex = medias.findIndex(media => media.id === selectedImage.dataset.mediaId);
+        const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
 
         const prevMedia = medias[currentIndex - 1];
+        console.log(prevMedia);
 
         selectedImage.setAttribute("src", `${assetsFolder}/${prevMedia.image}`);
         selectedImage.dataset.mediaId = prevMedia.id;
