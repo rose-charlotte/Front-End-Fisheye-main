@@ -8,6 +8,7 @@ export function displayLightbox(e) {
     const lightboxImg = document.createElement("img");
     lightboxImg.setAttribute("src", e.currentTarget.src);
     lightboxImg.setAttribute("class", "lightbox-img");
+    lightboxImg.dataset.mediaId = e.currentTarget.dataset.mediaId;
 
     media.replaceChildren(lightboxImg);
 }

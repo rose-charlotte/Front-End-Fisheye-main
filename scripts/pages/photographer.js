@@ -20,10 +20,14 @@ function getPhotographerInfo() {
     }
 }
 
+function getPhotographerAssetsFolder(photographer) {
+    const firstName = photographer.name.split(" ")[0];
+    return `assets/photographers/${firstName}/`;
+}
+
 function buildPhotographerMediaList(photographer, medias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
-    const firstName = photographer.name.split(" ")[0];
-    const assetsFolder = `assets/photographers/${firstName}/`;
+    const assetsFolder = getPhotographerAssetsFolder(photographer);
 
     medias.forEach(media => {
         const photographerMedia = buildPhotographerMedia(media, assetsFolder);
@@ -158,7 +162,7 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLighBoxMedia(medias) {
+function buildLighBoxMedia(photographer, medias) {
     const allImages = document.querySelectorAll(".picture");
     allImages.forEach(image => image.addEventListener("click", displayLightbox));
 
@@ -172,57 +176,33 @@ function buildLighBoxMedia(medias) {
     const prevdBtn = document.querySelector(".backward-btn");
     prevdBtn.addEventListener("click", prevPhoto);
 
+    const assetsFolder = getPhotographerAssetsFolder(photographer);
+
     function nextPhoto() {
         const selectedImage = document.querySelector(".lightbox-img");
-        console.log(selectedImage.src);
-        const selectedImageTitle = selectedImage.src.split("/");
-        console.log(selectedImageTitle);
-        console.log(selectedImageTitle[6]);
-        const imageArray = [];
-        medias.forEach(media => imageArray.push(media.image));
-        console.log(imageArray);
-        let imageTitle = imageArray.find(element => element === selectedImageTitle[6]);
-        console.log(imageTitle);
-        const currentIndex = imageArray.indexOf(imageTitle);
-        console.log(currentIndex);
+        const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
 
-        const next = currentIndex + 1;
-        console.log(next);
-        const nextPhoto = imageArray[next];
-        console.log(nextPhoto);
+        const nextMedia = medias[currentIndex + 1];
 
-        selectedImageTitle.pop();
-        selectedImageTitle.push(nextPhoto);
-
-        const nextImageSrc = selectedImageTitle.toString().replace(/,/g, "/");
-        console.log(nextImageSrc);
-        selectedImage.setAttribute("src", nextImageSrc);
+        selectedImage.setAttribute("src", `${assetsFolder}/${nextMedia.image}`);
+        selectedImage.dataset.mediaId = nextMedia.id;
     }
 
     function prevPhoto() {
         const selectedImage = document.querySelector(".lightbox-img");
-        console.log(selectedImage.src);
         const selectedImageTitle = selectedImage.src.split("/");
-        console.log(selectedImageTitle);
-        console.log(selectedImageTitle[6]);
         const imageArray = [];
         medias.forEach(media => imageArray.push(media.image));
-        console.log(imageArray);
         let imageTitle = imageArray.find(element => element === selectedImageTitle[6]);
-        console.log(imageTitle);
         const currentIndex = imageArray.indexOf(imageTitle);
-        console.log(currentIndex);
 
         const prev = currentIndex - 1;
-        console.log(prev);
         const prevPhoto = imageArray[prev];
-        console.log(prevPhoto);
 
         selectedImageTitle.pop();
         selectedImageTitle.push(prevPhoto);
 
         const prevImageSrc = selectedImageTitle.toString().replace(/,/g, "/");
-        console.log(prevImageSrc);
         selectedImage.setAttribute("src", prevImageSrc);
     }
 }
@@ -233,7 +213,7 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
-    buildLighBoxMedia(medias);
+    buildLighBoxMedia(photographer, medias);
 }
 
 buildPage();

@@ -35,6 +35,7 @@ class ImageBuilder {
         img.setAttribute("src", `${this.#assetsFolder}${this.#media.image}`);
         img.setAttribute("alt", "photo");
         img.setAttribute("style", "cursor: pointer");
+        img.dataset.mediaId = this.#media.id;
         return img;
     }
 }
