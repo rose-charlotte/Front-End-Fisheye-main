@@ -190,20 +190,12 @@ function buildLighBoxMedia(photographer, medias) {
 
     function prevPhoto() {
         const selectedImage = document.querySelector(".lightbox-img");
-        const selectedImageTitle = selectedImage.src.split("/");
-        const imageArray = [];
-        medias.forEach(media => imageArray.push(media.image));
-        let imageTitle = imageArray.find(element => element === selectedImageTitle[6]);
-        const currentIndex = imageArray.indexOf(imageTitle);
+        const currentIndex = medias.findIndex(media => media.id === selectedImage.dataset.mediaId);
 
-        const prev = currentIndex - 1;
-        const prevPhoto = imageArray[prev];
+        const prevMedia = medias[currentIndex - 1];
 
-        selectedImageTitle.pop();
-        selectedImageTitle.push(prevPhoto);
-
-        const prevImageSrc = selectedImageTitle.toString().replace(/,/g, "/");
-        selectedImage.setAttribute("src", prevImageSrc);
+        selectedImage.setAttribute("src", `${assetsFolder}/${prevMedia.image}`);
+        selectedImage.dataset.mediaId = prevMedia.id;
     }
 }
 
