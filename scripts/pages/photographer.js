@@ -158,13 +158,73 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLighBoxMedia() {
-    const selectedImages = document.querySelectorAll(".picture");
-    selectedImages.forEach(image => image.addEventListener("click", displayLightbox));
+function buildLighBoxMedia(medias) {
+    const allImages = document.querySelectorAll(".picture");
+    allImages.forEach(image => image.addEventListener("click", displayLightbox));
 
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
+
+    const forwardBtn = document.querySelector(".forward-btn");
+    forwardBtn.addEventListener("click", nextPhoto);
+
+    const prevdBtn = document.querySelector(".backward-btn");
+    prevdBtn.addEventListener("click", prevPhoto);
+
+    function nextPhoto() {
+        const selectedImage = document.querySelector(".lightbox-img");
+        console.log(selectedImage.src);
+        const selectedImageTitle = selectedImage.src.split("/");
+        console.log(selectedImageTitle);
+        console.log(selectedImageTitle[6]);
+        const imageArray = [];
+        medias.forEach(media => imageArray.push(media.image));
+        console.log(imageArray);
+        let imageTitle = imageArray.find(element => element === selectedImageTitle[6]);
+        console.log(imageTitle);
+        const currentIndex = imageArray.indexOf(imageTitle);
+        console.log(currentIndex);
+
+        const next = currentIndex + 1;
+        console.log(next);
+        const nextPhoto = imageArray[next];
+        console.log(nextPhoto);
+
+        selectedImageTitle.pop();
+        selectedImageTitle.push(nextPhoto);
+
+        const nextImageSrc = selectedImageTitle.toString().replace(/,/g, "/");
+        console.log(nextImageSrc);
+        selectedImage.setAttribute("src", nextImageSrc);
+    }
+
+    function prevPhoto() {
+        const selectedImage = document.querySelector(".lightbox-img");
+        console.log(selectedImage.src);
+        const selectedImageTitle = selectedImage.src.split("/");
+        console.log(selectedImageTitle);
+        console.log(selectedImageTitle[6]);
+        const imageArray = [];
+        medias.forEach(media => imageArray.push(media.image));
+        console.log(imageArray);
+        let imageTitle = imageArray.find(element => element === selectedImageTitle[6]);
+        console.log(imageTitle);
+        const currentIndex = imageArray.indexOf(imageTitle);
+        console.log(currentIndex);
+
+        const prev = currentIndex - 1;
+        console.log(prev);
+        const prevPhoto = imageArray[prev];
+        console.log(prevPhoto);
+
+        selectedImageTitle.pop();
+        selectedImageTitle.push(prevPhoto);
+
+        const prevImageSrc = selectedImageTitle.toString().replace(/,/g, "/");
+        console.log(prevImageSrc);
+        selectedImage.setAttribute("src", prevImageSrc);
+    }
 }
 
 async function buildPage() {
@@ -173,7 +233,7 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
-    buildLighBoxMedia();
+    buildLighBoxMedia(medias);
 }
 
 buildPage();
