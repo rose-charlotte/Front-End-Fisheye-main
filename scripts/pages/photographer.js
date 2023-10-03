@@ -165,6 +165,26 @@ function buildPhotographerCardInfo(photographer, medias) {
 function buildLighBoxMedia(photographer, medias) {
     const allImages = document.querySelectorAll(".picture");
     allImages.forEach(image => image.addEventListener("click", displayLightbox));
+    //allImages.forEach(image => image.addEventListener("click", displayLightboxWithMediaFactory));
+
+    // function displayLightboxWithMediaFactory(e) {
+    //     console.log(medias);
+
+    //     console.log(e.currentTarget);
+    //     const mainPage = document.querySelector(".main_page");
+    //     mainPage.style.display = "none";
+    //     const media = document.querySelector(".media");
+    //     const lightboxElement = document.querySelector(".lightbox");
+    //     lightboxElement.style.display = "flex";
+
+    //     const mediaFactory = new MediaFactory(media, assetsFolder);
+
+    //     const mediaFactoryElement = mediaFactory.build();
+
+    //     console.log(mediaFactoryElement);
+
+    //     media.replaceChildren(mediaFactoryElement);
+    // }
 
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
@@ -176,12 +196,13 @@ function buildLighBoxMedia(photographer, medias) {
     const prevdBtn = document.querySelector(".backward-btn");
     prevdBtn.addEventListener("click", prevPhoto);
 
-    const lightBox = document.querySelector(".lightbox");
-    lightBox.onKeydown = prevAndNextPhoto;
+    // A REVOIR !!!!!!!!!
+    // const lightBox = document.querySelector(".lightbox");
+    // lightBox.onkeydown = prevAndNextPhoto;
 
-    function prevAndNextPhoto(event) {
-        console.log(event);
-    }
+    // function prevAndNextPhoto(e) {
+    //     console.log(e.code);
+    // }
 
     const assetsFolder = getPhotographerAssetsFolder(photographer);
 
@@ -200,10 +221,79 @@ function buildLighBoxMedia(photographer, medias) {
         const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
 
         const prevMedia = medias[currentIndex - 1];
-        console.log(prevMedia);
 
         selectedImage.setAttribute("src", `${assetsFolder}/${prevMedia.image}`);
         selectedImage.dataset.mediaId = prevMedia.id;
+    }
+}
+
+function buildMediaSort() {
+    const select = document.querySelector(".select");
+
+    const popularityOption = document.createElement("option");
+    popularityOption.setAttribute("value", "0");
+    popularityOption.textContent = "Popularité";
+
+    const dateOption = document.createElement("option");
+    dateOption.setAttribute("value", "1");
+    dateOption.textContent = "Date";
+
+    const titleOption = document.createElement("option");
+    titleOption.setAttribute("value", "2");
+    titleOption.textContent = "Titre";
+
+    select.appendChild(popularityOption);
+    select.appendChild(dateOption);
+    select.appendChild(titleOption);
+}
+
+function sortMedia(medias) {
+    console.log(medias);
+
+    const titleSort = medias.sort(function (a, b) {
+        if (a.title < b.title) {
+            return -1;
+        } else if (a.title > b.title) {
+            return 1;
+        } else return 0;
+    });
+
+    const popularitySort = medias.sort(function (a, b) {
+        if (a.likes < b.likes) {
+            return 1;
+        } else if (a.likes > b.likes) {
+            return -1;
+        } else return 0;
+    });
+
+    const dateSort = medias.sort(function (a, b) {
+        if (a.date < b.date) {
+            return 1;
+        } else if (a.date > b.date) {
+            return -1;
+        } else return 0;
+    });
+    const selectOption = document.querySelector(".select");
+    selectOption.addEventListener("change", selectMediaSort);
+
+    function selectMediaSort() {
+        const index = selectOption.selectedIndex;
+        switch (index) {
+            case 0:
+                console.log("je suis le 0");
+                console.log(popularitySort);
+                break;
+            case 1:
+                console.log("je suis le 1");
+                console.log(dateSort);
+                break;
+            case 2:
+                console.log("je suis le 2");
+                console.log(titleSort);
+                break;
+            default:
+                console.log("nada");
+        }
     }
 }
 
@@ -214,6 +304,8 @@ async function buildPage() {
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
     buildLighBoxMedia(photographer, medias);
+    buildMediaSort(medias);
+    sortMedia(medias);
 }
 
 buildPage();

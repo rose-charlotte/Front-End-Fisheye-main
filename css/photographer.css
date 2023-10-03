@@ -247,3 +247,20 @@ form input {
     align-self: flex-end;
     padding: 20px;
 }
+
+.selectContainer{
+    display: flex;
+    padding-left: 5%;
+    display: flex;
+    gap: 33px;
+    padding-top: 2%;
+    align-items: center;
+}
+
+.select{
+   border-radius: 5%; 
+   width: 10%;
+   background-color:#901C1C;
+   color: white; 
+   height: 42px;
+}
