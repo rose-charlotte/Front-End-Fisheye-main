@@ -10,6 +10,12 @@ import {
 import { displayModal, closeModal } from "../utils/contactForm.js";
 import { closeLightbox, displayLightbox } from "../utils/lightbox.js";
 
+const SortBy = {
+    Date: "Date",
+    Popularity: "Popularity",
+    Title: "Title",
+};
+
 function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
@@ -29,12 +35,29 @@ function buildPhotographerMediaList(photographer, medias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
     const assetsFolder = getPhotographerAssetsFolder(photographer);
 
-    medias.forEach(media => {
-        const photographerMedia = buildPhotographerMedia(media, assetsFolder);
-        photographMediaDomElement.appendChild(photographerMedia);
-    });
-}
+    const newChildren = medias.sort(sortMedia).map(media => buildPhotographerMedia(media, assetsFolder));
 
+    photographMediaDomElement.replaceChildren(...newChildren);
+    // photographMediaDomElement.appendChild(newChildren);
+}
+function sortMedia(media1, media2) {
+    const select = document.querySelector(".select");
+    const selectedSortBy = select.options[select.selectedIndex].value;
+    console.log(selectedSortBy);
+    switch (selectedSortBy) {
+        case SortBy.Date:
+            return new Date(media1.date) - new Date(media2.date);
+
+        case SortBy.Popularity:
+            return media1.likes === media2.likes ? 0 : media1.likes < media2.likes ? 1 : -1;
+
+        case SortBy.Title:
+            return media1.title.localeCompare(media2.title);
+
+        default:
+            throw new Error("aucun résultat!");
+    }
+}
 function buildPhotographerInfo(photographer) {
     const header = document.querySelector("header");
     const logo = document.querySelector(".logo");
@@ -165,6 +188,7 @@ function buildPhotographerCardInfo(photographer, medias) {
 function buildLighBoxMedia(photographer, medias) {
     const allImages = document.querySelectorAll(".picture");
     allImages.forEach(image => image.addEventListener("click", displayLightbox));
+    allImages.forEach(image => image.addEventListener("click", () => console.log("click")));
     //allImages.forEach(image => image.addEventListener("click", displayLightboxWithMediaFactory));
 
     // function displayLightboxWithMediaFactory(e) {
@@ -196,13 +220,19 @@ function buildLighBoxMedia(photographer, medias) {
     const prevdBtn = document.querySelector(".backward-btn");
     prevdBtn.addEventListener("click", prevPhoto);
 
-    // A REVOIR !!!!!!!!!
-    // const lightBox = document.querySelector(".lightbox");
-    // lightBox.onkeydown = prevAndNextPhoto;
-
-    // function prevAndNextPhoto(e) {
-    //     console.log(e.code);
-    // }
+    // Navigation through the lightbox page with keyboard buttons:
+    const body = document.querySelector("body");
+    body.addEventListener("keydown", handleMediaDisplay);
+    function handleMediaDisplay(e) {
+        console.log(e.code);
+        if (e.code === "ArrowRight") {
+            nextPhoto();
+        } else if (e.code === "ArrowLeft") {
+            prevPhoto();
+        } else if (e.code === "Escape" || e.code === "Enter") {
+            closeLightbox();
+        }
+    }
 
     const assetsFolder = getPhotographerAssetsFolder(photographer);
 
@@ -231,81 +261,38 @@ function buildMediaSort() {
     const select = document.querySelector(".select");
 
     const popularityOption = document.createElement("option");
-    popularityOption.setAttribute("value", "0");
+    popularityOption.setAttribute("value", SortBy.Popularity);
     popularityOption.textContent = "Popularité";
 
     const dateOption = document.createElement("option");
-    dateOption.setAttribute("value", "1");
+    dateOption.setAttribute("value", SortBy.Date);
     dateOption.textContent = "Date";
 
     const titleOption = document.createElement("option");
-    titleOption.setAttribute("value", "2");
+    titleOption.setAttribute("value", SortBy.Title);
     titleOption.textContent = "Titre";
 
     select.appendChild(popularityOption);
     select.appendChild(dateOption);
     select.appendChild(titleOption);
+
+    select.addEventListener("change", changeSortOption);
 }
 
-function sortMedia(medias) {
-    console.log(medias);
+async function changeSortOption() {
+    const [photographer, medias] = await getPhotographerInfo();
 
-    const titleSort = medias.sort(function (a, b) {
-        if (a.title < b.title) {
-            return -1;
-        } else if (a.title > b.title) {
-            return 1;
-        } else return 0;
-    });
-
-    const popularitySort = medias.sort(function (a, b) {
-        if (a.likes < b.likes) {
-            return 1;
-        } else if (a.likes > b.likes) {
-            return -1;
-        } else return 0;
-    });
-
-    const dateSort = medias.sort(function (a, b) {
-        if (a.date < b.date) {
-            return 1;
-        } else if (a.date > b.date) {
-            return -1;
-        } else return 0;
-    });
-    const selectOption = document.querySelector(".select");
-    selectOption.addEventListener("change", selectMediaSort);
-
-    function selectMediaSort() {
-        const index = selectOption.selectedIndex;
-        switch (index) {
-            case 0:
-                console.log("je suis le 0");
-                console.log(popularitySort);
-                break;
-            case 1:
-                console.log("je suis le 1");
-                console.log(dateSort);
-                break;
-            case 2:
-                console.log("je suis le 2");
-                console.log(titleSort);
-                break;
-            default:
-                console.log("nada");
-        }
-    }
+    buildPhotographerMediaList(photographer, medias);
 }
 
 async function buildPage() {
     const [photographer, medias] = await getPhotographerInfo();
 
+    buildMediaSort(medias);
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
     buildLighBoxMedia(photographer, medias);
-    buildMediaSort(medias);
-    sortMedia(medias);
 }
 
 buildPage();
