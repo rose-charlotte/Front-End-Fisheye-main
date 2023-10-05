@@ -8,7 +8,7 @@ import {
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
-import { closeLightbox, displayLightbox } from "../utils/lightbox.js";
+import { closeLightbox, displayLightbox, nextMedia, prevMedia } from "../utils/lightbox.js";
 import { getPhotographerAssetsFolder } from "../utils/assetsUtils.js";
 
 const SortBy = {
@@ -183,50 +183,28 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLighBoxMedia(photographer, medias) {
+function buildLighBoxMedia() {
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
 
     const forwardBtn = document.querySelector(".forward-btn");
-    forwardBtn.addEventListener("click", nextPhoto);
+    forwardBtn.addEventListener("click", nextMedia);
 
     const prevdBtn = document.querySelector(".backward-btn");
-    prevdBtn.addEventListener("click", prevPhoto);
+    prevdBtn.addEventListener("click", prevMedia);
 
     // Navigation through the lightbox page with keyboard buttons:
     const body = document.querySelector("body");
     body.addEventListener("keydown", handleMediaDisplay);
     function handleMediaDisplay(e) {
         if (e.code === "ArrowRight") {
-            nextPhoto();
+            nextMedia();
         } else if (e.code === "ArrowLeft") {
-            prevPhoto();
+            prevMedia();
         } else if (e.code === "Escape" || e.code === "Enter") {
             closeLightbox();
         }
-    }
-
-    const assetsFolder = getPhotographerAssetsFolder(photographer);
-
-    function nextPhoto() {
-        const selectedImage = document.querySelector(".lightbox-img");
-        const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-
-        const nextMedia = medias[currentIndex + 1];
-
-        selectedImage.setAttribute("src", `${assetsFolder}/${nextMedia.image}`);
-        selectedImage.dataset.mediaId = nextMedia.id;
-    }
-
-    function prevPhoto() {
-        const selectedImage = document.querySelector(".lightbox-img");
-        const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-
-        const prevMedia = medias[currentIndex - 1];
-
-        selectedImage.setAttribute("src", `${assetsFolder}/${prevMedia.image}`);
-        selectedImage.dataset.mediaId = prevMedia.id;
     }
 }
 
