@@ -1,18 +1,20 @@
+import { getPhotographerAssetsFolder } from "./assetsUtils.js";
+
 export class MediaFactory {
     #media;
-    #assetsFolder;
+    #photographer;
 
-    constructor(media, assetsFolder) {
+    constructor(media, photographer) {
         this.#media = media;
-        this.#assetsFolder = assetsFolder;
+        this.#photographer = photographer;
     }
 
-    build() {
+    build(classOverride) {
         if (this.#isVideo()) {
-            return new VideoBuilder(this.#media, this.#assetsFolder).build();
+            return new VideoBuilder(this.#media, this.#photographer).build(classOverride);
         }
 
-        return new ImageBuilder(this.#media, this.#assetsFolder).build();
+        return new ImageBuilder(this.#media, this.#photographer).build(classOverride);
     }
 
     #isVideo() {
@@ -22,39 +24,43 @@ export class MediaFactory {
 
 class ImageBuilder {
     #media;
-    #assetsFolder;
+    #photographer;
 
-    constructor(media, assetsFolder) {
+    constructor(media, photographer) {
         this.#media = media;
-        this.#assetsFolder = assetsFolder;
+        this.#photographer = photographer;
     }
 
-    build() {
+    build(classOverride) {
+        const assetsFolder = getPhotographerAssetsFolder(this.#photographer);
+
         const img = document.createElement("img");
-        img.setAttribute("class", "picture");
-        img.setAttribute("src", `${this.#assetsFolder}${this.#media.image}`);
+        img.setAttribute("class", classOverride ?? "picture");
+        img.setAttribute("src", `${assetsFolder}${this.#media.image}`);
         img.setAttribute("alt", "photo");
-        img.setAttribute("style", "cursor: pointer");
         img.dataset.mediaId = this.#media.id;
+        img.dataset.photographerId = this.#photographer.id;
         return img;
     }
 }
 
 class VideoBuilder {
     #media;
-    #assetsFolder;
+    #photographer;
 
-    constructor(media, assetsFolder) {
+    constructor(media, photographer) {
         this.#media = media;
-        this.#assetsFolder = assetsFolder;
+        this.#photographer = photographer;
     }
 
-    build() {
+    build(classOverride) {
+        const assetsFolder = getPhotographerAssetsFolder(this.#photographer);
+
         const video = document.createElement("video");
-        video.setAttribute("class", "video");
-        video.setAttribute("src", `${this.#assetsFolder}${this.#media.video}`);
-        video.setAttribute("style", "cursor: pointer");
-        video.addEventListener("click", () => console.log("good"));
+        video.setAttribute("class", classOverride ?? "video");
+        video.setAttribute("src", `${assetsFolder}${this.#media.video}`);
+        video.dataset.mediaId = this.#media.id;
+        video.dataset.photographerId = this.#photographer.id;
         return video;
     }
 }

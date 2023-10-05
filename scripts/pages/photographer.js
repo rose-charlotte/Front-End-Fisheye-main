@@ -1,6 +1,6 @@
 //Mettre le code JavaScript lié à la page photographer.html
 import { getPhotographerById } from "../data/photographer.js";
-import { getPhotographerMediaById } from "../data/photographer.js";
+import { getPhotographerMediasById } from "../data/photographer.js";
 import { MediaFactory } from "../utils/mediaBuilder.js";
 import {
     buildPhotographerLocation,
@@ -9,6 +9,7 @@ import {
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
 import { closeLightbox, displayLightbox } from "../utils/lightbox.js";
+import { getPhotographerAssetsFolder } from "../utils/assetsUtils.js";
 
 const SortBy = {
     Date: "Date",
@@ -20,22 +21,16 @@ function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
     try {
-        return Promise.all([getPhotographerById(id), getPhotographerMediaById(id)]);
+        return Promise.all([getPhotographerById(id), getPhotographerMediasById(id)]);
     } catch (e) {
         console.log(e);
     }
 }
 
-function getPhotographerAssetsFolder(photographer) {
-    const firstName = photographer.name.split(" ")[0];
-    return `assets/photographers/${firstName}/`;
-}
-
 function buildPhotographerMediaList(photographer, medias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
-    const assetsFolder = getPhotographerAssetsFolder(photographer);
 
-    const newChildren = medias.sort(sortMedia).map(media => buildPhotographerMedia(media, assetsFolder));
+    const newChildren = medias.sort(sortMedia).map(media => buildPhotographerMedia(media, photographer));
 
     photographMediaDomElement.replaceChildren(...newChildren);
     // photographMediaDomElement.appendChild(newChildren);
@@ -120,12 +115,12 @@ function buildPhotographerInfo(photographer) {
     return { name };
 }
 
-function buildPhotographerMedia(mediaData, assetsFolder) {
+function buildPhotographerMedia(mediaData, photographer) {
     const { likes, title } = mediaData;
 
     const article = document.createElement("article");
 
-    const mediaFactory = new MediaFactory(mediaData, assetsFolder);
+    const mediaFactory = new MediaFactory(mediaData, photographer);
 
     const mediaInfo = document.createElement("div");
     mediaInfo.setAttribute("class", "media-info");
@@ -133,13 +128,15 @@ function buildPhotographerMedia(mediaData, assetsFolder) {
     const mediaTitle = document.createElement("p");
     mediaTitle.textContent = title;
 
-    const heartIcon = document.createElement("img");
-    heartIcon.setAttribute("src", "assets/icons/likes.svg");
-
     const mediaLikes = document.createElement("div");
-
+    mediaLikes.setAttribute("class", "media-likes");
     mediaLikes.textContent = likes;
     mediaLikes.setAttribute("aria-label", "likes");
+
+    const heartIcon = document.createElement("img");
+    heartIcon.setAttribute("src", "assets/icons/likes.svg");
+    // Handle add like
+    heartIcon.addEventListener("click", console.log(Number(mediaLikes.textContent) + 1));
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
@@ -148,6 +145,7 @@ function buildPhotographerMedia(mediaData, assetsFolder) {
     mediaInfo.appendChild(mediaLikes);
     mediaLikes.appendChild(heartIcon);
 
+    mediaElement.addEventListener("click", displayLightbox);
     return article;
 }
 
@@ -186,30 +184,6 @@ function buildPhotographerCardInfo(photographer, medias) {
 }
 
 function buildLighBoxMedia(photographer, medias) {
-    const allImages = document.querySelectorAll(".picture");
-    allImages.forEach(image => image.addEventListener("click", displayLightbox));
-    allImages.forEach(image => image.addEventListener("click", () => console.log("click")));
-    //allImages.forEach(image => image.addEventListener("click", displayLightboxWithMediaFactory));
-
-    // function displayLightboxWithMediaFactory(e) {
-    //     console.log(medias);
-
-    //     console.log(e.currentTarget);
-    //     const mainPage = document.querySelector(".main_page");
-    //     mainPage.style.display = "none";
-    //     const media = document.querySelector(".media");
-    //     const lightboxElement = document.querySelector(".lightbox");
-    //     lightboxElement.style.display = "flex";
-
-    //     const mediaFactory = new MediaFactory(media, assetsFolder);
-
-    //     const mediaFactoryElement = mediaFactory.build();
-
-    //     console.log(mediaFactoryElement);
-
-    //     media.replaceChildren(mediaFactoryElement);
-    // }
-
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
@@ -224,7 +198,6 @@ function buildLighBoxMedia(photographer, medias) {
     const body = document.querySelector("body");
     body.addEventListener("keydown", handleMediaDisplay);
     function handleMediaDisplay(e) {
-        console.log(e.code);
         if (e.code === "ArrowRight") {
             nextPhoto();
         } else if (e.code === "ArrowLeft") {

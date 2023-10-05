@@ -102,11 +102,13 @@ body{
     height: 300px;
     object-fit: cover;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .video{
     width: 350px;
     height: 300px;
+    cursor: pointer;
 }
 
 
