@@ -9,7 +9,6 @@ import {
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
 import { closeLightbox, displayLightbox, nextMedia, prevMedia } from "../utils/lightbox.js";
-import { getPhotographerAssetsFolder } from "../utils/assetsUtils.js";
 
 const SortBy = {
     Date: "Date",
@@ -33,7 +32,6 @@ function buildPhotographerMediaList(photographer, medias) {
     const newChildren = medias.sort(sortMedia).map(media => buildPhotographerMedia(media, photographer));
 
     photographMediaDomElement.replaceChildren(...newChildren);
-    // photographMediaDomElement.appendChild(newChildren);
 }
 function sortMedia(media1, media2) {
     const select = document.querySelector(".select");
@@ -130,22 +128,37 @@ function buildPhotographerMedia(mediaData, photographer) {
 
     const mediaLikes = document.createElement("div");
     mediaLikes.setAttribute("class", "media-likes");
-    mediaLikes.textContent = likes;
-    mediaLikes.setAttribute("aria-label", "likes");
+    const mediaLikesNumber = document.createElement("p");
+    mediaLikesNumber.textContent = likes;
+    mediaLikesNumber.setAttribute("aria-label", "likes");
 
     const heartIcon = document.createElement("img");
+    heartIcon.setAttribute("class", "media-likes-img");
     heartIcon.setAttribute("src", "assets/icons/likes.svg");
-    // Handle add like
-    heartIcon.addEventListener("click", console.log(Number(mediaLikes.textContent) + 1));
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
     article.appendChild(mediaInfo);
     mediaInfo.appendChild(mediaTitle);
     mediaInfo.appendChild(mediaLikes);
+    mediaLikes.appendChild(mediaLikesNumber);
     mediaLikes.appendChild(heartIcon);
 
     mediaElement.addEventListener("click", displayLightbox);
+
+    // Handle add like
+    mediaLikes.addEventListener("click", () => (mediaLikesNumber.textContent = likes + 1));
+
+    // function addLikes(likes) {
+    //     console.log(likes);
+    //     const newCount = likes + 1;
+    //     console.log(newCount);
+    //     const newMediaLikes = document.querySelectorAll(".media-likes");
+    //     newMediaLikes.textContent = newCount;
+    //     // const heartIcon = document.querySelector(".media-likes-img");
+    //     // heartIcon.setAttribute("src", "assets/icons/likes.svg");
+    //     // newMediaLikes.appendChild(heartIcon);
+    // }
     return article;
 }
 
@@ -183,25 +196,25 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLighBoxMedia() {
+function buildLighBoxMedia(medias) {
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
 
     const forwardBtn = document.querySelector(".forward-btn");
-    forwardBtn.addEventListener("click", nextMedia);
+    forwardBtn.addEventListener("click", () => nextMedia(medias.sort(sortMedia)));
 
     const prevdBtn = document.querySelector(".backward-btn");
-    prevdBtn.addEventListener("click", prevMedia);
+    prevdBtn.addEventListener("click", () => prevMedia(medias.sort(sortMedia)));
 
     // Navigation through the lightbox page with keyboard buttons:
     const body = document.querySelector("body");
     body.addEventListener("keydown", handleMediaDisplay);
     function handleMediaDisplay(e) {
         if (e.code === "ArrowRight") {
-            nextMedia();
+            nextMedia(medias.sort(sortMedia));
         } else if (e.code === "ArrowLeft") {
-            prevMedia();
+            prevMedia(medias.sort(sortMedia));
         } else if (e.code === "Escape" || e.code === "Enter") {
             closeLightbox();
         }
@@ -243,7 +256,7 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
-    buildLighBoxMedia(photographer, medias);
+    buildLighBoxMedia(medias);
 }
 
 buildPage();

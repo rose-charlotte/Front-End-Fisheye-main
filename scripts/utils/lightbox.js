@@ -1,10 +1,9 @@
-import { getMediaById, getPhotographerById, getPhotographerMediasById } from "../data/photographer.js";
+import { getMediaById, getPhotographerById } from "../data/photographer.js";
 import { MediaFactory } from "./mediaBuilder.js";
 
 async function displayLightBoxMedia(mediaId, photographerId) {
     const mediaElement = document.querySelector(".media");
 
-    console.log(`media-id: ${mediaId}, photographer-id: ${photographerId}`);
     const media = await getMediaById(mediaId);
     const photographer = await getPhotographerById(photographerId);
     const mediaFactory = new MediaFactory(media, photographer);
@@ -18,13 +17,6 @@ export function displayLightbox(e) {
 
     const lightboxElement = document.querySelector(".lightbox");
     lightboxElement.style.display = "flex";
-
-    // const lightboxImg = document.createElement("img");
-    // lightboxImg.setAttribute("src", e.currentTarget.src);
-    // lightboxImg.setAttribute("class", "lightbox-img");
-    // lightboxImg.dataset.mediaId = e.currentTarget.dataset.mediaId;
-
-    // media.replaceChildren(lightboxImg);
 }
 
 export function closeLightbox() {
@@ -34,32 +26,19 @@ export function closeLightbox() {
     lightbox.style.display = "none";
 }
 
-export async function nextMedia() {
+export async function nextMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
     const photgrapherId = selectedImage.dataset.photographerId;
-    const medias = await getPhotographerMediasById(photgrapherId);
-
-    console.log(medias);
 
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-    console.log(currentIndex);
-
     const nextMedia = medias[currentIndex + 1].id;
-    console.log(nextMedia);
     displayLightBoxMedia(nextMedia, photgrapherId);
 }
 
-export async function prevMedia() {
+export async function prevMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
     const photgrapherId = selectedImage.dataset.photographerId;
-    const medias = await getPhotographerMediasById(photgrapherId);
-
-    console.log(medias);
-
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-    console.log(currentIndex);
-
     const nextMedia = medias[currentIndex - 1].id;
-    console.log(nextMedia);
     displayLightBoxMedia(nextMedia, photgrapherId);
 }
