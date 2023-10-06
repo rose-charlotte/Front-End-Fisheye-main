@@ -130,11 +130,12 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaLikes.setAttribute("class", "media-likes");
     const mediaLikesNumber = document.createElement("p");
     mediaLikesNumber.textContent = likes;
+    mediaLikesNumber.setAttribute("class", "media-likes-number");
     mediaLikesNumber.setAttribute("aria-label", "likes");
 
     const heartIcon = document.createElement("img");
     heartIcon.setAttribute("class", "media-likes-img");
-    heartIcon.setAttribute("src", "assets/icons/likes.svg");
+    heartIcon.setAttribute("src", "assets/icons/likeStroke.svg");
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
@@ -147,18 +148,19 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaElement.addEventListener("click", displayLightbox);
 
     // Handle add like
-    mediaLikes.addEventListener("click", () => (mediaLikesNumber.textContent = likes + 1));
+    let likesCounter = likes;
+    mediaLikes.addEventListener("click", function () {
+        likesCounter++;
+        mediaLikesNumber.textContent = likesCounter;
+        heartIcon.setAttribute("src", "assets/icons/likes.svg");
+    });
 
-    // function addLikes(likes) {
-    //     console.log(likes);
-    //     const newCount = likes + 1;
-    //     console.log(newCount);
-    //     const newMediaLikes = document.querySelectorAll(".media-likes");
-    //     newMediaLikes.textContent = newCount;
-    //     // const heartIcon = document.querySelector(".media-likes-img");
-    //     // heartIcon.setAttribute("src", "assets/icons/likes.svg");
-    //     // newMediaLikes.appendChild(heartIcon);
+    // function countLikes() {
+    //     let initialCount = likes;
+
+    //     mediaLikesNumber.textContent = initialCount;
     // }
+    // countLikes();
     return article;
 }
 
