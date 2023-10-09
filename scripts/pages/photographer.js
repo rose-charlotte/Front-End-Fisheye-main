@@ -26,10 +26,11 @@ function getPhotographerInfo() {
     }
 }
 
-function buildPhotographerMediaList(photographer, medias) {
+function buildPhotographerMediaList(photographer, sortedMedias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
 
-    const newChildren = medias.sort(sortMedia).map(media => buildPhotographerMedia(media, photographer));
+    const newChildren = sortedMedias.map(media => buildPhotographerMedia(media, photographer));
+    console.log(newChildren);
 
     photographMediaDomElement.replaceChildren(...newChildren);
 }
@@ -115,6 +116,7 @@ function buildPhotographerInfo(photographer) {
 
 function buildPhotographerMedia(mediaData, photographer) {
     const { likes, title } = mediaData;
+    console.log(mediaData.likes);
 
     const article = document.createElement("article");
 
@@ -151,16 +153,12 @@ function buildPhotographerMedia(mediaData, photographer) {
     let likesCounter = likes;
     mediaLikes.addEventListener("click", function () {
         likesCounter++;
+        mediaData.likes = likesCounter;
+        console.log(mediaData.likes);
         mediaLikesNumber.textContent = likesCounter;
         heartIcon.setAttribute("src", "assets/icons/likes.svg");
     });
 
-    // function countLikes() {
-    //     let initialCount = likes;
-
-    //     mediaLikesNumber.textContent = initialCount;
-    // }
-    // countLikes();
     return article;
 }
 
@@ -198,25 +196,25 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfo.appendChild(cardInfoPrice);
 }
 
-function buildLighBoxMedia(medias) {
+function buildLighBoxMedia(sortedMedias) {
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
 
     const forwardBtn = document.querySelector(".forward-btn");
-    forwardBtn.addEventListener("click", () => nextMedia(medias.sort(sortMedia)));
+    forwardBtn.addEventListener("click", () => nextMedia(sortedMedias));
 
     const prevdBtn = document.querySelector(".backward-btn");
-    prevdBtn.addEventListener("click", () => prevMedia(medias.sort(sortMedia)));
+    prevdBtn.addEventListener("click", () => prevMedia(sortedMedias));
 
     // Navigation through the lightbox page with keyboard buttons:
     const body = document.querySelector("body");
     body.addEventListener("keydown", handleMediaDisplay);
     function handleMediaDisplay(e) {
         if (e.code === "ArrowRight") {
-            nextMedia(medias.sort(sortMedia));
+            nextMedia(sortedMedias);
         } else if (e.code === "ArrowLeft") {
-            prevMedia(medias.sort(sortMedia));
+            prevMedia(sortedMedias);
         } else if (e.code === "Escape" || e.code === "Enter") {
             closeLightbox();
         }
@@ -248,7 +246,9 @@ function buildMediaSort() {
 async function changeSortOption() {
     const [photographer, medias] = await getPhotographerInfo();
 
-    buildPhotographerMediaList(photographer, medias);
+    const sortedMedias = medias.sort(sortMedia);
+    console.log(sortedMedias);
+    buildPhotographerMediaList(photographer, sortedMedias);
 }
 
 async function buildPage() {
