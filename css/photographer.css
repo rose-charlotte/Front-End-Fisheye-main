@@ -272,3 +272,14 @@ form input {
     display: flex;
     gap: 5px;
 }
+
+.media-likes-img-fill{
+    display: none;
+}
+.media-likes-img-fill-toggle{
+    display: block;
+}
+
+.media-likes-img-toggle{
+    display: none;
+}

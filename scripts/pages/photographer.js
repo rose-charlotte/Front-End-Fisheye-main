@@ -130,14 +130,17 @@ function buildPhotographerMedia(mediaData, photographer) {
 
     const mediaLikes = document.createElement("div");
     mediaLikes.setAttribute("class", "media-likes");
-    const mediaLikesNumber = document.createElement("p");
+    let mediaLikesNumber = document.createElement("p");
     mediaLikesNumber.textContent = likes;
     mediaLikesNumber.setAttribute("class", "media-likes-number");
     mediaLikesNumber.setAttribute("aria-label", "likes");
 
     const heartIcon = document.createElement("img");
+    const heartIconFilled = document.createElement("img");
     heartIcon.setAttribute("class", "media-likes-img");
     heartIcon.setAttribute("src", "assets/icons/likeStroke.svg");
+    heartIconFilled.setAttribute("class", "media-likes-img-fill");
+    heartIconFilled.setAttribute("src", "assets/icons/likes.svg");
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
@@ -146,18 +149,25 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaInfo.appendChild(mediaLikes);
     mediaLikes.appendChild(mediaLikesNumber);
     mediaLikes.appendChild(heartIcon);
+    mediaLikes.appendChild(heartIconFilled);
 
     mediaElement.addEventListener("click", displayLightbox);
 
-    // Handle add like
-    let likesCounter = likes;
+    // Handle toggle like
+
     mediaLikes.addEventListener("click", function () {
-        likesCounter++;
-        mediaData.likes = likesCounter;
-        console.log(mediaData.likes);
-        mediaLikesNumber.textContent = likesCounter;
-        heartIcon.setAttribute("src", "assets/icons/likes.svg");
+        console.log(heartIcon);
+        mediaLikesNumber.textContent = mediaLikesNumber.textContent == likes ? likes + 1 : likes;
+        heartIcon.classList.toggle("media-likes-img-toggle");
+        heartIconFilled.classList.toggle("media-likes-img-fill-toggle");
     });
+
+    // function heartIconToggle(){
+    //     if (heartIcon.style.display === "block"){
+    //         heartIcon.style.display = "none";
+    //         heartIconFilled.style.display = "block"
+    //     }
+    // }
 
     return article;
 }
