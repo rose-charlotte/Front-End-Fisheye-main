@@ -283,3 +283,14 @@ form input {
 .media-likes-img-toggle{
     display: none;
 }
+
+.link{
+    background-color: white;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    
+}
+.link:focus{
+    border: solid black 2px
+}

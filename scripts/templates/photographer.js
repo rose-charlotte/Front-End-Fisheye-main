@@ -3,6 +3,7 @@ import {
     buildPhotographerName,
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
+import { handleHomePageDisplay } from "./accessibily.js";
 
 function photographerTemplate(data) {
     const { name, portrait, city, country, tagline, price, id } = data;
@@ -10,12 +11,18 @@ function photographerTemplate(data) {
     const picture = `assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
+        // const body = document.querySelector("body");
         const article = document.createElement("article");
 
         const link = document.createElement("a");
-        link.setAttribute("style", "cursor: pointer; text-decoration:none");
+        link.setAttribute("tabindex", "0");
+        link.setAttribute("class", "link");
+
         link.setAttribute("aria-label", `lien vers la page de ${name}`);
         link.addEventListener("click", () => link.setAttribute("href", `photographer.html?id=${id}`));
+
+        // accessibility management of the main page
+        link.addEventListener("keydown", handleHomePageDisplay);
 
         const img = document.createElement("img");
         img.setAttribute("src", picture);

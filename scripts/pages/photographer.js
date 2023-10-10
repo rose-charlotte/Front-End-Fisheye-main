@@ -30,7 +30,6 @@ function buildPhotographerMediaList(photographer, sortedMedias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
 
     const newChildren = sortedMedias.map(media => buildPhotographerMedia(media, photographer));
-    console.log(newChildren);
 
     photographMediaDomElement.replaceChildren(...newChildren);
 }
@@ -115,8 +114,7 @@ function buildPhotographerInfo(photographer) {
 }
 
 function buildPhotographerMedia(mediaData, photographer) {
-    const { likes, title } = mediaData;
-    console.log(mediaData.likes);
+    const { likes, title, id } = mediaData;
 
     const article = document.createElement("article");
 
@@ -154,22 +152,34 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaElement.addEventListener("click", displayLightbox);
 
     // Handle toggle like
-
     mediaLikes.addEventListener("click", function () {
-        console.log(heartIcon);
+        const mediaId = id;
         mediaLikesNumber.textContent = mediaLikesNumber.textContent == likes ? likes + 1 : likes;
         heartIcon.classList.toggle("media-likes-img-toggle");
         heartIconFilled.classList.toggle("media-likes-img-fill-toggle");
+        const numberOfLikes = parseInt(mediaLikesNumber.textContent);
+        handleAddLikes(numberOfLikes, mediaId);
     });
 
-    // function heartIconToggle(){
-    //     if (heartIcon.style.display === "block"){
-    //         heartIcon.style.display = "none";
-    //         heartIconFilled.style.display = "block"
-    //     }
-    // }
-
     return article;
+}
+
+async function handleAddLikes(numberOfLikes, mediaId) {
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+    const medias = await getPhotographerMediasById(id);
+
+    const media = medias.find(media => media.id === mediaId);
+
+    media.likes = numberOfLikes;
+
+    refreshLikeCount(medias);
+}
+
+function refreshLikeCount(photographerMedias) {
+    const totalLikes = photographerMedias.reduce((totalLikes, media) => totalLikes + media.likes, 0);
+
+    document.querySelector(".total-likes-count").textContent = totalLikes;
 }
 
 function buildPhotographerCardInfo(photographer, medias) {
@@ -188,22 +198,22 @@ function buildPhotographerCardInfo(photographer, medias) {
     const cardInfoLike = document.createElement("div");
     cardInfoLike.setAttribute("class", "info-like");
     cardInfoLike.setAttribute("aria-label", "nombre de likes");
+
+    const totalLikesCount = document.createElement("div");
+    totalLikesCount.setAttribute("class", "total-likes-count");
+    totalLikesCount.ariaLabel = "Nombre total de likes";
+
     const likeImg = document.createElement("img");
     likeImg.setAttribute("aria-hidden", "true");
     likeImg.setAttribute("src", "assets/icons/likesBlack.svg");
 
-    // Add like number: creation of an empty array to stock likes values for each media
-    // Use the reduce methode to get the sum of all likes.
-    const likesArray = [];
-    medias.forEach(like => likesArray.push(like.likes));
-    const totalLike = likesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-    cardInfoLike.textContent = totalLike;
-
     mainSection.appendChild(cardInfo);
     cardInfo.appendChild(cardInfoLike);
+    cardInfoLike.appendChild(totalLikesCount);
     cardInfoLike.appendChild(likeImg);
     cardInfo.appendChild(cardInfoPrice);
+
+    refreshLikeCount(medias);
 }
 
 function buildLighBoxMedia(sortedMedias) {
@@ -255,9 +265,8 @@ function buildMediaSort() {
 
 async function changeSortOption() {
     const [photographer, medias] = await getPhotographerInfo();
-
     const sortedMedias = medias.sort(sortMedia);
-    console.log(sortedMedias);
+
     buildPhotographerMediaList(photographer, sortedMedias);
 }
 
