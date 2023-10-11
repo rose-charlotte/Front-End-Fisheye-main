@@ -1,4 +1,4 @@
-import { getPhotographers } from "../data/photographer.js";
+import { getPhotographers } from "../data/photographerData.js";
 
 export function handleHomePageDisplay(photographers) {
     console.log(photographers);

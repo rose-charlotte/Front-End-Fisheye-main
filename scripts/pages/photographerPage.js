@@ -1,6 +1,6 @@
 //Mettre le code JavaScript lié à la page photographer.html
-import { getPhotographerById } from "../data/photographer.js";
-import { getPhotographerMediasById } from "../data/photographer.js";
+import { getPhotographerById } from "../data/photographerData.js";
+import { getPhotographerMediasById } from "../data/photographerData.js";
 import { MediaFactory } from "../utils/mediaBuilder.js";
 import {
     buildPhotographerLocation,

@@ -1,4 +1,4 @@
-import { getMediaById, getPhotographerById } from "../data/photographer.js";
+import { getMediaById, getPhotographerById } from "../data/photographerData.js";
 import { MediaFactory } from "./mediaBuilder.js";
 
 async function displayLightBoxMedia(mediaId, photographerId) {
