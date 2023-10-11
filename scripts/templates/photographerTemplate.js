@@ -11,7 +11,7 @@ function photographerTemplate(data) {
     const picture = `assets/photographers/${portrait}`;
 
     function getUserCardDOM() {
-        // const body = document.querySelector("body");
+        const body = document.querySelector("body");
         const article = document.createElement("article");
 
         const link = document.createElement("a");
@@ -22,7 +22,12 @@ function photographerTemplate(data) {
         link.addEventListener("click", () => link.setAttribute("href", `photographer.html?id=${id}`));
 
         // accessibility management of the main page
-        link.addEventListener("keydown", handleHomePageDisplay);
+        body.addEventListener("keydown", handleHomePageDisplay);
+        // function handleHomePageDisplay(e) {
+        //     console.log(e.key);
+        //     console.log(link);
+        //     //link.addEventListener("keyDown", console.log(link));
+        // }
 
         const img = document.createElement("img");
         img.setAttribute("src", picture);

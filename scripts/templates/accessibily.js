@@ -1,25 +1,22 @@
 import { getPhotographers } from "../data/photographerData.js";
 
-export function handleHomePageDisplay(photographers) {
-    console.log(photographers);
-
-    // const link = document.querySelector(".link");
-    // console.log(photographers);
-    // const touch = e.code;
-    // switch (touch) {
-    //     case "Enter":
-    //         link.setAttribute("href", `photographer.html?id=${photographers.id}`);
-    //         break;
-    //     case "ArrowRight":
-    //         console.log("ArrowRight");
-    //         break;
-    //     default:
-    //         console.log("pas de touche");
-    // }
-}
-
-async function useData() {
+export async function handleHomePageDisplay(e) {
     const photographers = await getPhotographers();
-    handleHomePageDisplay(photographers);
+    console.log(photographers);
+    console.log(e.code);
+    const links = document.querySelectorAll(".link");
+    console.log(links);
+
+    const key = e.code;
+
+    switch (key) {
+        case "Enter":
+            links.forEach(link => link.setAttribute("href", `photographer.html?id=${photographers.id}`));
+            break;
+        case "ArrowRight":
+            console.log("ArrowRight");
+            break;
+        default:
+            console.log("pas de touche");
+    }
 }
-useData();
