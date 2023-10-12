@@ -10,12 +10,11 @@ export function displayModal() {
     // asset aria-hidden attribute to hyde the rest of html page for assistance tech
     const mainPage = document.querySelector("#main");
     mainPage.setAttribute("aria-hidden", "true");
-    const media = document.querySelector(".photograph-media");
-    media.setAttribute("aria-hidden", "true");
-    //mainPage.setAttribute("display", "none");
 }
 
 export function closeModal() {
     const modal = document.getElementById("contact_modal");
     modal.style.display = "none";
+    const mainPage = document.querySelector("#main");
+    mainPage.setAttribute("aria-hidden", "false");
 }
