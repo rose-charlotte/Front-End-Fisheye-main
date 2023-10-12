@@ -17,17 +17,13 @@ function photographerTemplate(data) {
         const link = document.createElement("a");
         link.setAttribute("tabindex", "0");
         link.setAttribute("class", "link");
-
+        link.dataset.photographerId = id;
         link.setAttribute("aria-label", `lien vers la page de ${name}`);
+
         link.addEventListener("click", () => link.setAttribute("href", `photographer.html?id=${id}`));
 
         // accessibility management of the main page
         body.addEventListener("keydown", handleHomePageDisplay);
-        // function handleHomePageDisplay(e) {
-        //     console.log(e.key);
-        //     console.log(link);
-        //     //link.addEventListener("keyDown", console.log(link));
-        // }
 
         const img = document.createElement("img");
         img.setAttribute("src", picture);

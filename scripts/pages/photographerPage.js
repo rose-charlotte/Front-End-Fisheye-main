@@ -57,6 +57,7 @@ function buildPhotographerInfo(photographer) {
     const logoLink = document.createElement("a");
     logoLink.setAttribute("style", "cursor: pointer; text-decoration:none");
     logoLink.addEventListener("click", () => logoLink.setAttribute("href", "index.html"));
+    logo.setAttribute("tabindex", "0");
 
     const { name, city, country, tagline, portrait } = photographer;
     const photographerHeader = document.querySelector(".photograph-header");
