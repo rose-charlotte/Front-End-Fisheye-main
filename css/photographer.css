@@ -294,3 +294,8 @@ form input {
 .link:focus{
     border: solid black 2px
 }
+
+.close_btn{
+    border: none;
+    background-color: #DB8876;
+}

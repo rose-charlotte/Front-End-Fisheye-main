@@ -54,10 +54,18 @@ function sortMedia(media1, media2) {
 function buildPhotographerInfo(photographer) {
     const header = document.querySelector("header");
     const logo = document.querySelector(".logo");
+
     const logoLink = document.createElement("a");
+    logoLink.setAttribute("tabindex", "0");
     logoLink.setAttribute("style", "cursor: pointer; text-decoration:none");
     logoLink.addEventListener("click", () => logoLink.setAttribute("href", "index.html"));
-    logo.setAttribute("tabindex", "0");
+    logoLink.addEventListener("keydown", closePhotographerPage);
+
+    function closePhotographerPage(e) {
+        if (e.code === "Enter") {
+            logoLink.setAttribute("href", "index.html");
+        }
+    }
 
     const { name, city, country, tagline, portrait } = photographer;
     const photographerHeader = document.querySelector(".photograph-header");
