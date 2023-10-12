@@ -27,6 +27,7 @@ export function closeLightbox() {
 }
 
 export async function nextMedia(medias) {
+    console.log(medias);
     const selectedImage = document.querySelector(".lightbox-img");
     const photgrapherId = selectedImage.dataset.photographerId;
 

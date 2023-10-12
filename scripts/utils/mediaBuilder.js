@@ -35,6 +35,7 @@ class ImageBuilder {
         const assetsFolder = getPhotographerAssetsFolder(this.#photographer);
 
         const img = document.createElement("img");
+        img.setAttribute("tabindex", "0");
         img.setAttribute("class", classOverride ?? "picture");
         img.setAttribute("src", `${assetsFolder}${this.#media.image}`);
         img.setAttribute("alt", this.#media.title);
@@ -57,6 +58,7 @@ class VideoBuilder {
         const assetsFolder = getPhotographerAssetsFolder(this.#photographer);
 
         const video = document.createElement("video");
+        video.setAttribute("tabindex", "0");
         video.setAttribute("class", classOverride ?? "video");
         video.setAttribute("controls", "controls");
         video.setAttribute("src", `${assetsFolder}${this.#media.video}`);

@@ -160,6 +160,22 @@ function buildPhotographerMedia(mediaData, photographer) {
 
     mediaElement.addEventListener("click", displayLightbox);
 
+    // const pictures = document.querySelectorAll(".picture");
+    // console.log(pictures);
+
+    // mediaElement.addEventListener("keydown", () => handleDisplayLightbox(mediaElement));
+
+    // function handleDisplayLightbox(e) {
+    //     const mediaId = e.dataset.mediaId;
+    //     const photographerId = e.dataset.photographerId;
+    //     console.log(e);
+    //     console.log(     mediaId);
+    //     console.log(photographerId);
+    //     if (e.code === "Enter") {
+    //         displayLightbox(mediaId, photographerId);
+    //     }
+    // }
+
     // Handle toggle like
     mediaLikes.addEventListener("click", function () {
         const mediaId = id;
@@ -277,6 +293,7 @@ async function changeSortOption() {
     const sortedMedias = medias.sort(sortMedia);
 
     buildPhotographerMediaList(photographer, sortedMedias);
+    buildLighBoxMedia(sortedMedias);
 }
 
 async function buildPage() {
@@ -286,7 +303,6 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
-    buildLighBoxMedia(medias);
 }
 
 buildPage();
