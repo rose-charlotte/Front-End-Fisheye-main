@@ -16,20 +16,26 @@ const SortBy = {
     Title: "Title",
 };
 
-function getPhotographerInfo() {
+const photographerInfos = {
+    photographer: undefined,
+    medias: undefined,
+};
+
+async function getPhotographerInfo() {
     const params = new URLSearchParams(window.location.search);
     const id = parseInt(params.get("id"));
-    try {
-        return Promise.all([getPhotographerById(id), getPhotographerMediasById(id)]);
-    } catch (err) {
-        console.log(err);
-    }
+
+    const [photographer, medias] = await Promise.all([getPhotographerById(id), getPhotographerMediasById(id)]);
+
+    photographerInfos.photographer = photographer;
+    photographerInfos.medias = medias;
 }
 
-function buildPhotographerMediaList(photographer, sortedMedias) {
+function buildPhotographerMediaList() {
     const photographMediaDomElement = document.querySelector(".photograph-media");
-    console.log(sortedMedias);
-    const newChildren = sortedMedias.map(media => buildPhotographerMedia(media, photographer));
+    const newChildren = photographerInfos.medias
+        .sort(sortMedia)
+        .map(media => buildPhotographerMedia(media, photographerInfos.photographer));
 
     photographMediaDomElement.replaceChildren(...newChildren);
 }
@@ -51,7 +57,8 @@ function sortMedia(media1, media2) {
             throw new Error("aucun résultat!");
     }
 }
-function buildPhotographerInfo(photographer) {
+
+function buildPhotographerInfo() {
     const header = document.querySelector("header");
     const logo = document.querySelector(".logo");
 
@@ -67,7 +74,7 @@ function buildPhotographerInfo(photographer) {
         }
     }
 
-    const { name, city, country, tagline, portrait } = photographer;
+    const { name, city, country, tagline, portrait } = photographerInfos.photographer;
     const photographerHeader = document.querySelector(".photograph-header");
 
     const photographerInfo = document.createElement("div");
@@ -208,8 +215,8 @@ function refreshLikeCount(photographerMedias) {
     document.querySelector(".total-likes-count").textContent = totalLikes;
 }
 
-function buildPhotographerCardInfo(photographer, medias) {
-    const price = photographer.price;
+function buildPhotographerCardInfo() {
+    const price = photographerInfos.photographer.price;
     const mainSection = document.querySelector("#main");
 
     const cardInfo = document.createElement("div");
@@ -239,31 +246,29 @@ function buildPhotographerCardInfo(photographer, medias) {
     cardInfoLike.appendChild(likeImg);
     cardInfo.appendChild(cardInfoPrice);
 
-    refreshLikeCount(medias);
+    refreshLikeCount(photographerInfos.medias);
 }
 
-function buildLighBoxMedia(medias) {
-    console.log(medias);
-    const sortedMedias = medias.sort(sortMedia);
-    console.log(sortedMedias);
+function buildLighBoxMedia() {
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
 
     const forwardBtn = document.querySelector(".forward-btn");
-    forwardBtn.addEventListener("click", () => nextMedia(sortedMedias));
+    forwardBtn.addEventListener("click", () => nextMedia(photographerInfos.medias));
 
     const prevdBtn = document.querySelector(".backward-btn");
-    prevdBtn.addEventListener("click", () => prevMedia(sortedMedias));
+    prevdBtn.addEventListener("click", () => prevMedia(photographerInfos.medias));
 
     // Navigation through the lightbox page with keyboard buttons:
     const body = document.querySelector("body");
     body.addEventListener("keydown", handleMediaDisplay);
+
     function handleMediaDisplay(e) {
         if (e.code === "ArrowRight") {
-            nextMedia(sortedMedias);
+            nextMedia(photographerInfos.medias);
         } else if (e.code === "ArrowLeft") {
-            prevMedia(sortedMedias);
+            prevMedia(photographerInfos.medias);
         } else if (e.code === "Escape" || e.code === "Enter") {
             closeLightbox();
         }
@@ -293,20 +298,26 @@ function buildMediaSort() {
 }
 
 async function changeSortOption() {
-    const [photographer, medias] = await getPhotographerInfo();
-    const sortedMedias = medias.sort(sortMedia);
-
-    buildPhotographerMediaList(photographer, sortedMedias);
+    buildPhotographerMediaList();
 }
 
 async function buildPage() {
-    const [photographer, medias] = await getPhotographerInfo();
+    try {
+        await getPhotographerInfo();
+    } catch (err) {
+        window.location.href = "photographerNotFound.html";
+        return;
+    }
 
-    buildMediaSort(medias);
-    buildPhotographerInfo(photographer);
-    buildPhotographerMediaList(photographer, medias);
-    buildPhotographerCardInfo(photographer, medias);
-    buildLighBoxMedia(medias);
+    try {
+        buildMediaSort();
+        buildPhotographerInfo();
+        buildPhotographerMediaList();
+        buildPhotographerCardInfo();
+        buildLighBoxMedia();
+    } catch (err) {
+        window.location.href = "error.html";
+    }
 }
 
 buildPage();

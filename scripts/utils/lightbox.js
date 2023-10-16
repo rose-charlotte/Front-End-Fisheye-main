@@ -13,6 +13,7 @@ export function displayLightbox(e) {
     //console.log(mediaId, photographerId);
     const { mediaId, photographerId } = e.target.dataset;
     displayLightBoxMedia(mediaId, photographerId);
+
     const mainPage = document.querySelector(".main_page");
     mainPage.style.display = "none";
 

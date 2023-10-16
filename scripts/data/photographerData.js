@@ -8,7 +8,13 @@ export async function getPhotographers() {
 
 export async function getPhotographerById(id) {
     const data = await getData();
-    return data.photographers.find(photoman => photoman.id == id);
+    const photographer = data.photographers.find(photoman => photoman.id == id);
+
+    if (!photographer) {
+        throw new Error("Photographer  not found");
+    }
+
+    return photographer;
 }
 
 export async function getPhotographerMediasById(id) {
