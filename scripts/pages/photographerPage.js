@@ -21,8 +21,8 @@ function getPhotographerInfo() {
     const id = parseInt(params.get("id"));
     try {
         return Promise.all([getPhotographerById(id), getPhotographerMediasById(id)]);
-    } catch (e) {
-        console.log(e);
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -34,7 +34,7 @@ function buildPhotographerMediaList(photographer, sortedMedias) {
     photographMediaDomElement.replaceChildren(...newChildren);
 }
 function sortMedia(media1, media2) {
-    const select = document.querySelector(".select");
+    const select = document.querySelector(".selectSortedOrder");
     const selectedSortBy = select.options[select.selectedIndex].value;
     console.log(selectedSortBy);
     switch (selectedSortBy) {
@@ -271,7 +271,7 @@ function buildLighBoxMedia(medias) {
 }
 
 function buildMediaSort() {
-    const select = document.querySelector(".select");
+    const select = document.querySelector(".selectSortedOrder");
 
     const popularityOption = document.createElement("option");
     popularityOption.setAttribute("value", SortBy.Popularity);

@@ -232,8 +232,9 @@ form input {
         
 }
 .lightbox-img{
-    width: 60%;
-    max-height: 90%;
+    width: 900px;
+    height: 600px;
+    object-fit: contain;
 }
 
 .backward-btn,
@@ -259,12 +260,14 @@ form input {
     align-items: center;
 }
 
-.select{
+.selectSortedOrder{
    border-radius: 5%; 
    width: 10%;
    background-color:#901C1C;
    color: white; 
-   height: 42px;
+   height: 69px;
+   font-size: 18px;
+   padding-left: 20px;
 }
 
 .media-likes{
