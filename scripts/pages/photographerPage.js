@@ -28,7 +28,7 @@ function getPhotographerInfo() {
 
 function buildPhotographerMediaList(photographer, sortedMedias) {
     const photographMediaDomElement = document.querySelector(".photograph-media");
-
+    console.log(sortedMedias);
     const newChildren = sortedMedias.map(media => buildPhotographerMedia(media, photographer));
 
     photographMediaDomElement.replaceChildren(...newChildren);
@@ -137,6 +137,7 @@ function buildPhotographerMedia(mediaData, photographer) {
 
     const mediaLikes = document.createElement("div");
     mediaLikes.setAttribute("class", "media-likes");
+    mediaLikes.setAttribute("tabindex", "0");
     let mediaLikesNumber = document.createElement("p");
     mediaLikesNumber.textContent = likes;
     mediaLikesNumber.setAttribute("class", "media-likes-number");
@@ -159,32 +160,32 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaLikes.appendChild(heartIconFilled);
 
     mediaElement.addEventListener("click", displayLightbox);
-
-    // const pictures = document.querySelectorAll(".picture");
-    // console.log(pictures);
-
-    // mediaElement.addEventListener("keydown", () => handleDisplayLightbox(mediaElement));
-
-    // function handleDisplayLightbox(e) {
-    //     const mediaId = e.dataset.mediaId;
-    //     const photographerId = e.dataset.photographerId;
-    //     console.log(e);
-    //     console.log(     mediaId);
-    //     console.log(photographerId);
-    //     if (e.code === "Enter") {
-    //         displayLightbox(mediaId, photographerId);
-    //     }
-    // }
+    //mediaElement.addEventListener("keydown", displayLightbox);
+    mediaElement.addEventListener("keydown", function (e) {
+        if (e.code === "Enter") {
+            const mediaId = e.currentTarget.dataset.mediaId;
+            const photographerId = e.currentTarget.dataset.photographerId;
+            console.log(mediaId, photographerId);
+            displayLightbox(mediaId, photographerId);
+        }
+    });
 
     // Handle toggle like
-    mediaLikes.addEventListener("click", function () {
+    mediaLikes.addEventListener("click", toggleLike);
+    mediaLikes.addEventListener("keydown", function (e) {
+        if (e.code === "Enter") {
+            toggleLike();
+        }
+    });
+
+    function toggleLike() {
         const mediaId = id;
         mediaLikesNumber.textContent = mediaLikesNumber.textContent == likes ? likes + 1 : likes;
         heartIcon.classList.toggle("media-likes-img-toggle");
         heartIconFilled.classList.toggle("media-likes-img-fill-toggle");
         const numberOfLikes = parseInt(mediaLikesNumber.textContent);
         handleAddLikes(numberOfLikes, mediaId);
-    });
+    }
 
     return article;
 }
@@ -241,7 +242,10 @@ function buildPhotographerCardInfo(photographer, medias) {
     refreshLikeCount(medias);
 }
 
-function buildLighBoxMedia(sortedMedias) {
+function buildLighBoxMedia(medias) {
+    console.log(medias);
+    const sortedMedias = medias.sort(sortMedia);
+    console.log(sortedMedias);
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
@@ -293,7 +297,6 @@ async function changeSortOption() {
     const sortedMedias = medias.sort(sortMedia);
 
     buildPhotographerMediaList(photographer, sortedMedias);
-    buildLighBoxMedia(sortedMedias);
 }
 
 async function buildPage() {
@@ -303,6 +306,7 @@ async function buildPage() {
     buildPhotographerInfo(photographer);
     buildPhotographerMediaList(photographer, medias);
     buildPhotographerCardInfo(photographer, medias);
+    buildLighBoxMedia(medias);
 }
 
 buildPage();

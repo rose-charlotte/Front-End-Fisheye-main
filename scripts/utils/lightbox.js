@@ -10,7 +10,8 @@ async function displayLightBoxMedia(mediaId, photographerId) {
     mediaElement.replaceChildren(mediaFactory.build("lightbox-img"));
 }
 export function displayLightbox(e) {
-    const { mediaId, photographerId } = e.currentTarget.dataset;
+    //console.log(mediaId, photographerId);
+    const { mediaId, photographerId } = e.target.dataset;
     displayLightBoxMedia(mediaId, photographerId);
     const mainPage = document.querySelector(".main_page");
     mainPage.style.display = "none";
@@ -27,19 +28,18 @@ export function closeLightbox() {
 }
 
 export async function nextMedia(medias) {
-    console.log(medias);
     const selectedImage = document.querySelector(".lightbox-img");
-    const photgrapherId = selectedImage.dataset.photographerId;
+    const photographerId = selectedImage.dataset.photographerId;
 
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
     const nextMedia = medias[currentIndex + 1].id;
-    displayLightBoxMedia(nextMedia, photgrapherId);
+    displayLightBoxMedia(nextMedia, photographerId);
 }
 
 export async function prevMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
-    const photgrapherId = selectedImage.dataset.photographerId;
+    const photographerId = selectedImage.dataset.photographerId;
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
     const nextMedia = medias[currentIndex - 1].id;
-    displayLightBoxMedia(nextMedia, photgrapherId);
+    displayLightBoxMedia(nextMedia, photographerId);
 }
