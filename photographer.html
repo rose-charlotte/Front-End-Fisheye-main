@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <link href="css/style.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8" />
@@ -14,7 +14,7 @@
             </header>
             <main id="main">
                 <div class="photograph-header">
-                    <button class="contact_button" aria-label="Contact me">Contactez-moi</button>
+                    <button class="contact_button" aria-label="Contactez moi">Contactez-moi</button>
                     <!-- onclick="displayModal()" -->
                 </div>
                 <div class="selectContainer" aria-label="contenaur du selecteur">
@@ -30,8 +30,8 @@
                     <div class="contact_info">
                         <h2>Contactez-moi</h2>
                     </div>
-                    <button class="close_btn" alt="close button">
-                        <img src="assets/icons/close.svg" />
+                    <button class="close_btn">
+                        <img src="assets/icons/close.svg" alt="close button" />
                     </button>
                 </header>
 
@@ -50,11 +50,11 @@
             </div>
         </div>
         <div class="lightbox" aria-label="Image closeup view">
-            <img src="assets/icons/closeRed.svg" class="close-btn" alt="Close dialog" />
+            <img src="assets/icons/closeRed.svg" class="close-btn" alt="Close dialog" tabindex="0" />
             <div class="lightbox-container">
-                <a class="backward-btn"><img src="assets/icons/backward.svg" alt="Previous image" /></a>
-                <div class="media"></div>
-                <a class="forward-btn"><img src="assets/icons/forward.svg" alt="Next image" /></a>
+                <a class="backward-btn" href="#"><img src="assets/icons/backward.svg" alt="Previous image" /></a>
+                <div class="media" tabindex="-1"></div>
+                <a class="forward-btn" href="#"><img src="assets/icons/forward.svg" alt="Next image" /></a>
             </div>
         </div>
         <script src="/scripts/pages/photographerPage.js" type="module"></script>

@@ -8,7 +8,7 @@ import {
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
-import { closeLightbox, displayLightbox, nextMedia, prevMedia } from "../utils/lightbox.js";
+import { closeLightbox, displayLightbox, initLightbox, nextMedia, prevMedia } from "../utils/lightbox.js";
 
 const SortBy = {
     Date: "Date",
@@ -154,8 +154,10 @@ function buildPhotographerMedia(mediaData, photographer) {
     const heartIconFilled = document.createElement("img");
     heartIcon.setAttribute("class", "media-likes-img");
     heartIcon.setAttribute("src", "assets/icons/likeStroke.svg");
+    heartIcon.setAttribute("aria-label", "like non cliqué");
     heartIconFilled.setAttribute("class", "media-likes-img-fill");
     heartIconFilled.setAttribute("src", "assets/icons/likes.svg");
+    heartIconFilled.setAttribute("aria-label", "like non cliqué");
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
@@ -166,16 +168,30 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaLikes.appendChild(heartIcon);
     mediaLikes.appendChild(heartIconFilled);
 
-    mediaElement.addEventListener("click", displayLightbox);
-    //mediaElement.addEventListener("keydown", displayLightbox);
-    mediaElement.addEventListener("keydown", function (e) {
+    mediaElement.addEventListener("click", faisTonBoulot);
+    function faisTonBoulot(e) {
+        // console.log(e.currentTarget);
+        displayLightbox(e);
+    }
+
+    mediaElement.addEventListener("keydown", faisTonBoulotAuClick);
+
+    function faisTonBoulotAuClick(e) {
+        console.log(e.code);
         if (e.code === "Enter") {
-            const mediaId = e.currentTarget.dataset.mediaId;
-            const photographerId = e.currentTarget.dataset.photographerId;
-            console.log(mediaId, photographerId);
-            displayLightbox(mediaId, photographerId);
+            displayLightbox(e);
         }
-    });
+    }
+
+    // mediaElement.addEventListener("keydown", function (e) {
+    //     console.log(e.currentTarget);
+    //     const mediaId = parseInt(e.currentTarget.dataset.mediaId);
+    //     const photographerId = parseInt(e.currentTarget.dataset.photographerId);
+    //     console.log(mediaId, photographerId);
+    //     if (e.code === "Enter") {
+    //         displayLightbox(mediaId, photographerId);
+    //     }
+    // });
 
     // Handle toggle like
     mediaLikes.addEventListener("click", toggleLike);
@@ -249,32 +265,6 @@ function buildPhotographerCardInfo() {
     refreshLikeCount(photographerInfos.medias);
 }
 
-function buildLighBoxMedia() {
-    const closeBtn = document.querySelector(".close-btn");
-    closeBtn.setAttribute("style", "cursor:pointer");
-    closeBtn.addEventListener("click", closeLightbox);
-
-    const forwardBtn = document.querySelector(".forward-btn");
-    forwardBtn.addEventListener("click", () => nextMedia(photographerInfos.medias));
-
-    const prevdBtn = document.querySelector(".backward-btn");
-    prevdBtn.addEventListener("click", () => prevMedia(photographerInfos.medias));
-
-    // Navigation through the lightbox page with keyboard buttons:
-    const body = document.querySelector("body");
-    body.addEventListener("keydown", handleMediaDisplay);
-
-    function handleMediaDisplay(e) {
-        if (e.code === "ArrowRight") {
-            nextMedia(photographerInfos.medias);
-        } else if (e.code === "ArrowLeft") {
-            prevMedia(photographerInfos.medias);
-        } else if (e.code === "Escape" || e.code === "Enter") {
-            closeLightbox();
-        }
-    }
-}
-
 function buildMediaSort() {
     const select = document.querySelector(".selectSortedOrder");
 
@@ -314,7 +304,7 @@ async function buildPage() {
         buildPhotographerInfo();
         buildPhotographerMediaList();
         buildPhotographerCardInfo();
-        buildLighBoxMedia();
+        initLightbox(photographerInfos.medias);
     } catch (err) {
         window.location.href = "error.html";
     }

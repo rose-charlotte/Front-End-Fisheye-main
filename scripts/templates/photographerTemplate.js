@@ -27,7 +27,7 @@ function photographerTemplate(data) {
 
         const img = document.createElement("img");
         img.setAttribute("src", picture);
-        img.setAttribute("alt", name);
+        img.setAttribute("alt", `photo de ${name}`);
 
         const nameElement = buildPhotographerName(name);
 
