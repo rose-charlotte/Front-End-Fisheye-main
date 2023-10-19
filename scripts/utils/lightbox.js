@@ -39,9 +39,15 @@ export function nextMedia(medias) {
     console.log(medias);
     console.log(currentIndex);
     console.log(medias[currentIndex]);
+    console.log(medias.length);
     if (currentIndex === 0) {
         const backwardBtn = document.querySelector(".backward-btn");
         backwardBtn.style.display = "block";
+    }
+    if (medias.length - 2 === currentIndex) {
+        console.log("dernier media");
+        const forwardBtn = document.querySelector(".forward-btn");
+        forwardBtn.style.display = "none";
     }
     const nextMedia = medias[currentIndex + 1].id;
 
@@ -61,6 +67,10 @@ export function prevMedia(medias) {
         console.log("je suis au 0");
         const backwardBtn = document.querySelector(".backward-btn");
         backwardBtn.style.display = "none";
+    }
+    if (currentIndex === medias.length - 1) {
+        const forwardBtn = document.querySelector(".forward-btn");
+        forwardBtn.style.display = "block";
     }
     const prevMedia = medias[currentIndex - 1].id;
 
