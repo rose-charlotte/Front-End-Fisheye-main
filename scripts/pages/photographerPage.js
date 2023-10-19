@@ -26,7 +26,6 @@ async function getPhotographerInfo() {
     const id = parseInt(params.get("id"));
 
     const [photographer, medias] = await Promise.all([getPhotographerById(id), getPhotographerMediasById(id)]);
-
     photographerInfos.photographer = photographer;
     photographerInfos.medias = medias;
 }

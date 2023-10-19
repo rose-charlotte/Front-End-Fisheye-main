@@ -8,7 +8,7 @@ export async function getPhotographers() {
 
 export async function getPhotographerById(id) {
     const data = await getData();
-    const photographer = data.photographers.find(photoman => photoman.id == id);
+    const photographer = data.photographers.find(photoman => photoman.id === parseInt(id));
 
     if (!photographer) {
         throw new Error("Photographer  not found");
@@ -19,12 +19,12 @@ export async function getPhotographerById(id) {
 
 export async function getPhotographerMediasById(id) {
     const data = await getData();
-    return data.media.filter(media => media.photographerId == id);
+    return data.media.filter(media => media.photographerId === parseInt(id));
 }
 
 export async function getMediaById(id) {
     const data = await getData();
-    return data.media.find(media => media.id == id);
+    return data.media.find(media => media.id === parseInt(id));
 }
 
 async function getData() {
