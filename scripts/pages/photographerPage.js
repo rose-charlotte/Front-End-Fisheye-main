@@ -187,7 +187,7 @@ function buildPhotographerMedia(mediaData, photographer) {
 
     function toggleLike() {
         const mediaId = id;
-        mediaLikesNumber.textContent = mediaLikesNumber.textContent == likes ? likes + 1 : likes;
+        mediaLikesNumber.textContent = parseInt(mediaLikesNumber.textContent) === likes ? likes + 1 : likes;
         heartIcon.classList.toggle("media-likes-img-toggle");
         heartIconFilled.classList.toggle("media-likes-img-fill-toggle");
         const numberOfLikes = parseInt(mediaLikesNumber.textContent);
@@ -271,7 +271,7 @@ function buildMediaSort() {
     select.addEventListener("change", changeSortOption);
 }
 
-async function changeSortOption() {
+function changeSortOption() {
     buildPhotographerMediaList();
 }
 

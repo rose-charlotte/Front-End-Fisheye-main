@@ -18,7 +18,7 @@ export class MediaFactory {
     }
 
     #isVideo() {
-        return this.#media.video != undefined;
+        return this.#media.video != null;
     }
 }
 

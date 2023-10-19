@@ -11,6 +11,7 @@ async function displayLightBoxMedia(mediaId, photographerId) {
 }
 export function displayLightbox(e) {
     const { mediaId, photographerId } = e.currentTarget.dataset;
+
     displayLightBoxMedia(mediaId, photographerId);
 
     const mainPage = document.querySelector(".main_page");
@@ -35,17 +36,12 @@ export function nextMedia(medias) {
 
     const photographerId = selectedImage.dataset.photographerId;
 
-    const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-    console.log(medias);
-    console.log(currentIndex);
-    console.log(medias[currentIndex]);
-    console.log(medias.length);
+    const currentIndex = medias.findIndex(media => media.id === parseInt(selectedImage.dataset.mediaId));
     if (currentIndex === 0) {
         const backwardBtn = document.querySelector(".backward-btn");
         backwardBtn.style.display = "block";
     }
     if (medias.length - 2 === currentIndex) {
-        console.log("dernier media");
         const forwardBtn = document.querySelector(".forward-btn");
         forwardBtn.style.display = "none";
     }
@@ -57,14 +53,9 @@ export function nextMedia(medias) {
 export function prevMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
     const photographerId = selectedImage.dataset.photographerId;
-    const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-
-    console.log(medias);
-    console.log(currentIndex);
-    console.log(medias[currentIndex]);
+    const currentIndex = medias.findIndex(media => media.id === parseInt(selectedImage.dataset.mediaId));
 
     if (currentIndex === 1) {
-        console.log("je suis au 0");
         const backwardBtn = document.querySelector(".backward-btn");
         backwardBtn.style.display = "none";
     }
@@ -73,13 +64,11 @@ export function prevMedia(medias) {
         forwardBtn.style.display = "block";
     }
     const prevMedia = medias[currentIndex - 1].id;
-
-    console.log(prevMedia);
-
     displayLightBoxMedia(prevMedia, photographerId);
 }
 
 export function initLightbox(medias) {
+    console.log(medias);
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
@@ -90,9 +79,11 @@ export function initLightbox(medias) {
     });
 
     const forwardBtn = document.querySelector(".forward-btn");
+
     forwardBtn.addEventListener("click", () => nextMedia(medias));
 
     const prevdBtn = document.querySelector(".backward-btn");
+
     prevdBtn.addEventListener("click", () => prevMedia(medias));
 
     // Navigation through the lightbox page with keyboard buttons:
