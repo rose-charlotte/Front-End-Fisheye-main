@@ -8,7 +8,7 @@ import {
     buildPhotographerTagline,
 } from "../utils/buildPhotographerName.js";
 import { displayModal, closeModal } from "../utils/contactForm.js";
-import { closeLightbox, displayLightbox, initLightbox, nextMedia, prevMedia } from "../utils/lightbox.js";
+import { displayLightbox, initLightbox } from "../utils/lightbox.js";
 
 const SortBy = {
     Date: "Date",
@@ -42,7 +42,7 @@ function buildPhotographerMediaList() {
 function sortMedia(media1, media2) {
     const select = document.querySelector(".selectSortedOrder");
     const selectedSortBy = select.options[select.selectedIndex].value;
-    console.log(selectedSortBy);
+
     switch (selectedSortBy) {
         case SortBy.Date:
             return new Date(media1.date) - new Date(media2.date);
@@ -168,30 +168,14 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaLikes.appendChild(heartIcon);
     mediaLikes.appendChild(heartIconFilled);
 
-    mediaElement.addEventListener("click", faisTonBoulot);
-    function faisTonBoulot(e) {
-        // console.log(e.currentTarget);
-        displayLightbox(e);
-    }
+    mediaElement.addEventListener("click", displayLightbox);
+    mediaElement.addEventListener("keydown", displayLightBoxWithKeyboard);
 
-    mediaElement.addEventListener("keydown", faisTonBoulotAuClick);
-
-    function faisTonBoulotAuClick(e) {
-        console.log(e.code);
+    function displayLightBoxWithKeyboard(e) {
         if (e.code === "Enter") {
             displayLightbox(e);
         }
     }
-
-    // mediaElement.addEventListener("keydown", function (e) {
-    //     console.log(e.currentTarget);
-    //     const mediaId = parseInt(e.currentTarget.dataset.mediaId);
-    //     const photographerId = parseInt(e.currentTarget.dataset.photographerId);
-    //     console.log(mediaId, photographerId);
-    //     if (e.code === "Enter") {
-    //         displayLightbox(mediaId, photographerId);
-    //     }
-    // });
 
     // Handle toggle like
     mediaLikes.addEventListener("click", toggleLike);

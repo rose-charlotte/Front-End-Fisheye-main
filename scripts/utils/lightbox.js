@@ -10,7 +10,6 @@ async function displayLightBoxMedia(mediaId, photographerId) {
     mediaElement.replaceChildren(mediaFactory.build("lightbox-img"));
 }
 export function displayLightbox(e) {
-    console.log(e.currentTarget);
     const { mediaId, photographerId } = e.currentTarget.dataset;
     displayLightBoxMedia(mediaId, photographerId);
 
@@ -31,21 +30,43 @@ export function closeLightbox() {
     lightbox.style.display = "none";
 }
 
-export async function nextMedia(medias) {
+export function nextMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
+
     const photographerId = selectedImage.dataset.photographerId;
 
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
+    console.log(medias);
+    console.log(currentIndex);
+    console.log(medias[currentIndex]);
+    if (currentIndex === 0) {
+        const backwardBtn = document.querySelector(".backward-btn");
+        backwardBtn.style.display = "block";
+    }
     const nextMedia = medias[currentIndex + 1].id;
+
     displayLightBoxMedia(nextMedia, photographerId);
 }
 
-export async function prevMedia(medias) {
+export function prevMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
     const photographerId = selectedImage.dataset.photographerId;
     const currentIndex = medias.findIndex(media => media.id == selectedImage.dataset.mediaId);
-    const nextMedia = medias[currentIndex - 1].id;
-    displayLightBoxMedia(nextMedia, photographerId);
+
+    console.log(medias);
+    console.log(currentIndex);
+    console.log(medias[currentIndex]);
+
+    if (currentIndex === 1) {
+        console.log("je suis au 0");
+        const backwardBtn = document.querySelector(".backward-btn");
+        backwardBtn.style.display = "none";
+    }
+    const prevMedia = medias[currentIndex - 1].id;
+
+    console.log(prevMedia);
+
+    displayLightBoxMedia(prevMedia, photographerId);
 }
 
 export function initLightbox(medias) {
