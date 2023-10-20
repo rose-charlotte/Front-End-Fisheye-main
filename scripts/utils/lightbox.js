@@ -72,7 +72,6 @@ export function prevMedia(medias) {
 }
 
 export function initLightbox(medias) {
-    console.log(medias);
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.setAttribute("style", "cursor:pointer");
     closeBtn.addEventListener("click", closeLightbox);
