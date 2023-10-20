@@ -116,7 +116,11 @@ function buildPhotographerInfo() {
     const message = document.querySelector("#message");
 
     contactForm.addEventListener("submit", onSubmit);
-
+    contactForm.addEventListener("keydown", function (e) {
+        if (e.code === "Escape") {
+            closeModal();
+        }
+    });
     function onSubmit(e) {
         e.preventDefault();
         console.log(
