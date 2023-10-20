@@ -1,18 +1,34 @@
 import { getMediaById, getPhotographerById } from "../data/photographerData.js";
 import { MediaFactory } from "./mediaBuilder.js";
 
-async function displayLightBoxMedia(mediaId, photographerId) {
+async function displayLightBoxMedia(mediaId, photographerId, medias) {
     const mediaElement = document.querySelector(".media");
 
     const media = await getMediaById(mediaId);
     const photographer = await getPhotographerById(photographerId);
     const mediaFactory = new MediaFactory(media, photographer);
     mediaElement.replaceChildren(mediaFactory.build("lightbox-img"));
+
+    const isFirstMedia = medias[0].id === mediaId;
+    const isLastMedia = medias[medias.length - 1].id === mediaId;
+
+    if (isFirstMedia) {
+        document.querySelector(".backward-btn").classList.add("btn-disabled");
+    } else {
+        document.querySelector(".backward-btn").classList.remove("btn-disabled");
+    }
+
+    if (isLastMedia) {
+        document.querySelector(".forward-btn").classList.add("btn-disabled");
+    } else {
+        document.querySelector(".forward-btn").classList.remove("btn-disabled");
+    }
 }
-export function displayLightbox(e) {
+
+export function displayLightbox(e, medias) {
     const { mediaId, photographerId } = e.currentTarget.dataset;
 
-    displayLightBoxMedia(mediaId, photographerId);
+    displayLightBoxMedia(parseInt(mediaId), photographerId, medias);
 
     const mainPage = document.querySelector(".main_page");
     mainPage.style.display = "none";
@@ -37,34 +53,22 @@ export function nextMedia(medias) {
     const photographerId = selectedImage.dataset.photographerId;
 
     const currentIndex = medias.findIndex(media => media.id === parseInt(selectedImage.dataset.mediaId));
-    if (currentIndex === 0) {
-        const backwardBtn = document.querySelector(".backward-btn");
-        backwardBtn.style.display = "block";
-    }
-    if (medias.length - 2 === currentIndex) {
-        const forwardBtn = document.querySelector(".forward-btn");
-        forwardBtn.style.display = "none";
-    }
+
     const nextMedia = medias[currentIndex + 1].id;
 
-    displayLightBoxMedia(nextMedia, photographerId);
+    displayLightBoxMedia(nextMedia, photographerId, medias);
 }
 
 export function prevMedia(medias) {
     const selectedImage = document.querySelector(".lightbox-img");
+
     const photographerId = selectedImage.dataset.photographerId;
+
     const currentIndex = medias.findIndex(media => media.id === parseInt(selectedImage.dataset.mediaId));
 
-    if (currentIndex === 1) {
-        const backwardBtn = document.querySelector(".backward-btn");
-        backwardBtn.style.display = "none";
-    }
-    if (currentIndex === medias.length - 1) {
-        const forwardBtn = document.querySelector(".forward-btn");
-        forwardBtn.style.display = "block";
-    }
     const prevMedia = medias[currentIndex - 1].id;
-    displayLightBoxMedia(prevMedia, photographerId);
+
+    displayLightBoxMedia(prevMedia, photographerId, medias);
 }
 
 export function initLightbox(medias) {

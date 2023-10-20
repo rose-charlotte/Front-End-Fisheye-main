@@ -12,7 +12,7 @@ body{
 .contact_modal_on{
     position: absolute;
     left: 13px;
-    padding-top: 92px;
+    padding-top: 25px;
     width: 100%;
     height: 100%;
     margin: unset;
@@ -156,12 +156,12 @@ body{
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
-    width: 40%;
-    height: 35%;
+    width: 669px;
+    height:780px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 35px;
     margin: auto;    
 }
@@ -245,6 +245,10 @@ form input {
     cursor: pointer;
 }
 
+.btn-disabled {
+    display: none;
+}
+
 .close-btn{
     width: 3%;
     align-self: flex-end;
@@ -253,7 +257,7 @@ form input {
 
 .selectContainer{
     display: flex;
-    padding-left: 5%;
+    padding-left: 140px;
     display: flex;
     gap: 33px;
     padding-top: 2%;
@@ -262,13 +266,26 @@ form input {
 
 .selectSortedOrder{
    border-radius: 5%; 
-   width: 10%;
+   width: 170px;
    background-color:#901C1C;
    color: white; 
    height: 69px;
    font-size: 18px;
    padding-left: 20px;
 }
+
+.selectSortedOrder-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+
 
 .media-likes{
     cursor: pointer;

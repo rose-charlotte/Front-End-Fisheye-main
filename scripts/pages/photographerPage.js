@@ -167,12 +167,12 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaLikes.appendChild(heartIcon);
     mediaLikes.appendChild(heartIconFilled);
 
-    mediaElement.addEventListener("click", displayLightbox);
+    mediaElement.addEventListener("click", e => displayLightbox(e, photographerInfos.medias));
     mediaElement.addEventListener("keydown", displayLightBoxWithKeyboard);
 
     function displayLightBoxWithKeyboard(e) {
         if (e.code === "Enter") {
-            displayLightbox(e);
+            displayLightbox(e, photographerInfos.medias);
         }
     }
 
