@@ -246,7 +246,7 @@ form input {
 }
 
 .btn-disabled {
-    display: none;
+    visibility: hidden;
 }
 
 .close-btn{
