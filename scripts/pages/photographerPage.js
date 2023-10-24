@@ -44,7 +44,7 @@ function sortMedia(media1, media2) {
 
     switch (selectedSortBy) {
         case SortBy.Date:
-            return new Date(media1.date) - new Date(media2.date);
+            return new Date(media2.date) - new Date(media1.date);
 
         case SortBy.Popularity:
             return media1.likes === media2.likes ? 0 : media1.likes < media2.likes ? 1 : -1;
@@ -77,13 +77,20 @@ function buildPhotographerInfo() {
     const photographerHeader = document.querySelector(".photograph-header");
 
     const photographerInfo = document.createElement("div");
+    photographerInfo.setAttribute("tabindex", "0");
     photographerInfo.setAttribute("aria-label", "information sur le photographe");
 
     const photographerName = buildPhotographerName(name);
+    photographerName.setAttribute("tabindex", "0");
+    photographerName.setAttribute("aria-label", name);
 
     const location = buildPhotographerLocation(city, country);
+    location.setAttribute("tabindex", "0");
+    location.setAttribute("aria-label", `${city}, ${country}`);
 
     const taglineElement = buildPhotographerTagline(tagline);
+    taglineElement.setAttribute("tabindex", "0");
+    taglineElement.setAttribute("aria-label", tagline);
 
     const picture = `assets/photographers/${portrait}`;
     const img = document.createElement("img");
@@ -143,6 +150,7 @@ function buildPhotographerMedia(mediaData, photographer) {
     mediaInfo.setAttribute("class", "media-info");
     mediaInfo.setAttribute("aria-label", "media info");
     const mediaTitle = document.createElement("p");
+    mediaTitle.setAttribute("class", "media-title");
     mediaTitle.textContent = title;
 
     const mediaLikes = document.createElement("div");
@@ -160,7 +168,7 @@ function buildPhotographerMedia(mediaData, photographer) {
     heartIcon.setAttribute("aria-label", "like non cliqué");
     heartIconFilled.setAttribute("class", "media-likes-img-fill");
     heartIconFilled.setAttribute("src", "assets/icons/likes.svg");
-    heartIconFilled.setAttribute("aria-label", "like non cliqué");
+    heartIconFilled.setAttribute("aria-label", "like cliqué");
 
     const mediaElement = mediaFactory.build();
     article.appendChild(mediaElement);
@@ -225,6 +233,7 @@ function buildPhotographerCardInfo() {
     const cardInfo = document.createElement("div");
     cardInfo.setAttribute("class", "card-info");
     cardInfo.setAttribute("aria-label", "information photographe");
+    cardInfo.setAttribute("tabindex", "0");
 
     const cardInfoPrice = document.createElement("p");
     cardInfoPrice.setAttribute("class", "info-price");

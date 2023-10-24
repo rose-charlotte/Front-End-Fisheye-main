@@ -59,10 +59,11 @@ class VideoBuilder {
 
         const video = document.createElement("video");
         video.setAttribute("tabindex", "0");
+        video.setAttribute("alt", this.#media.title);
         video.setAttribute("class", classOverride ?? "video");
         video.setAttribute("controls", "controls");
         video.setAttribute("src", `${assetsFolder}${this.#media.video}`);
-        video.setAttribute("alt", this.#media.title);
+
         video.dataset.mediaId = this.#media.id;
         video.dataset.photographerId = this.#photographer.id;
         return video;

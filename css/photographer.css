@@ -310,3 +310,10 @@ form input {
     border: none;
     background-color: #DB8876;
 }
+
+.media-title{
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

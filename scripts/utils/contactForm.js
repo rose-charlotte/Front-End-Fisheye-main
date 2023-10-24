@@ -5,7 +5,7 @@ export function displayModal() {
     modal.setAttribute("aria-modal", "true");
     const modalDiv = document.querySelector(".modal");
     modalDiv.setAttribute("tabindex", "-1");
-    //modalDiv.focus();
+
     document.querySelector("#firstname").focus();
 
     // asset aria-hidden attribute to hyde the rest of html page for assistance tech
