@@ -9,6 +9,13 @@ async function displayLightBoxMedia(mediaId, photographerId, medias) {
     const mediaFactory = new MediaFactory(media, photographer);
     mediaElement.replaceChildren(mediaFactory.build("lightbox-img"));
 
+    const mediaTitle = document.createElement("h1");
+    mediaTitle.setAttribute("class", "media-title");
+    mediaTitle.setAttribute("aria-label", "titre du media");
+    mediaTitle.textContent = media.title;
+
+    mediaElement.appendChild(mediaTitle);
+
     const isFirstMedia = medias[0].id === mediaId;
     const isLastMedia = medias[medias.length - 1].id === mediaId;
 

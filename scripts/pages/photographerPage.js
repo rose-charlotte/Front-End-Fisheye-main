@@ -250,6 +250,7 @@ function buildPhotographerCardInfo() {
 
     const likeImg = document.createElement("img");
     likeImg.setAttribute("aria-hidden", "true");
+    likeImg.setAttribute("alt", "likes");
     likeImg.setAttribute("src", "assets/icons/likesBlack.svg");
 
     mainSection.appendChild(cardInfo);
