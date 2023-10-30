@@ -149,7 +149,7 @@ function buildPhotographerMedia(mediaData, photographer) {
     const mediaInfo = document.createElement("div");
     mediaInfo.setAttribute("class", "media-info");
     mediaInfo.setAttribute("aria-label", "media info");
-    const mediaTitle = document.createElement("p");
+    const mediaTitle = document.createElement("h1");
     mediaTitle.setAttribute("class", "media-title");
     mediaTitle.textContent = title;
 

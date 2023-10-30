@@ -38,7 +38,7 @@ class ImageBuilder {
         img.setAttribute("tabindex", "0");
         img.setAttribute("class", classOverride ?? "picture");
         img.setAttribute("src", `${assetsFolder}${this.#media.image}`);
-        img.setAttribute("alt", this.#media.title);
+        img.setAttribute("alt", "");
         img.dataset.mediaId = this.#media.id;
         img.dataset.photographerId = this.#photographer.id;
         return img;
@@ -59,7 +59,7 @@ class VideoBuilder {
 
         const video = document.createElement("video");
         video.setAttribute("tabindex", "0");
-        video.setAttribute("alt", this.#media.title);
+        video.setAttribute("alt", "");
         video.setAttribute("class", classOverride ?? "video");
         video.setAttribute("controls", "controls");
         video.setAttribute("src", `${assetsFolder}${this.#media.video}`);
